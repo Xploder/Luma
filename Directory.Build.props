@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <LumaBuildRoot Condition="'$(LumaBuildRoot)' == ''">$(MSBuildThisFileDirectory).build\</LumaBuildRoot>
+    <RestorePackagesPath>$(LumaBuildRoot)\packages</RestorePackagesPath>
+    <BaseIntermediateOutputPath>$(LumaBuildRoot)\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(LumaBuildRoot)\bin\$(MSBuildProjectName)\</BaseOutputPath>
+    <DefaultItemExcludes>$(DefaultItemExcludes);.build\**;dist\**;bin\**;obj\**;Tests\bin\**;Tests\obj\**</DefaultItemExcludes>
+    <NuGetAudit>false</NuGetAudit>
+  </PropertyGroup>
+</Project>

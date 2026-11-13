@@ -1,0 +1,10 @@
+bin/
+obj/
+Tests/bin/
+Tests/obj/
+*.user
+Luma-error.log
+.build/
+dist/
+*.zip
+*.pdb
