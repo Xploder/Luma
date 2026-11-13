@@ -18,7 +18,7 @@ public sealed class LedSettings
     {
         try
         {
-            var s = JsonSerializer.Deserialize<LedSettings>(File.ReadAllText(FileName)) ?? new();
+            var s = JsonSerializer.Deserialize(File.ReadAllText(FileName), SettingsJsonContext.Default.LedSettings) ?? new();
             s.Brightness = Math.Clamp(s.Brightness, 0, 100);
             if (!new byte[] { 1, 2, 3, 4, 8, 9, 13 }.Contains(s.Mode)) s.Mode = 1;
             return s;
@@ -29,7 +29,7 @@ public sealed class LedSettings
     {
         Directory.CreateDirectory(Folder);
         string temp = FileName + ".tmp";
-        File.WriteAllText(temp, JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true }));
+        File.WriteAllText(temp, JsonSerializer.Serialize(this, SettingsJsonContext.Default.LedSettings));
         File.Move(temp, FileName, true);
     }
     private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -45,3 +45,7 @@ public sealed class LedSettings
         else key.DeleteValue("LumaXboxLed", false);
     }
 }
+
+[System.Text.Json.Serialization.JsonSerializable(typeof(LedSettings))]
+[System.Text.Json.Serialization.JsonSourceGenerationOptions(WriteIndented = true)]
+internal partial class SettingsJsonContext : System.Text.Json.Serialization.JsonSerializerContext { }

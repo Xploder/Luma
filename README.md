@@ -35,7 +35,7 @@ Eine native Windows-11-App auf Basis von **WinUI 3, Windows App SDK 2.6.5 und .N
 
 ## 🚀 Schnellstart
 
-Das komplette Archiv `Luma-Windows-x64.zip` entpacken und `Luma.exe` öffnen. Die Dateien neben der EXE werden benötigt. .NET und Windows-App-SDK-Laufzeit sind enthalten; es muss kein Entwickler-SDK installiert werden.
+Das komplette Archiv `Luma-Windows-x64.zip` entpacken und `Luma.exe` öffnen. Ab Version 1.1 enthält die einzelne EXE die benötigten Laufzeitdateien. LICENSE und THIRD-PARTY-NOTICES.txt gehören zur Weitergabe dazu. .NET und Windows-App-SDK-Laufzeit sind enthalten; es muss kein Entwickler-SDK installiert werden.
 
 Controller per USB oder Microsoft Xbox Wireless Adapter verbinden. Bluetooth unterstützt die hier verwendete LED-Steuerung nicht. Steam wird nicht benötigt. Andere LED-Steuerungsprogramme möglichst schließen, damit sie die Einstellung nicht überschreiben.
 
@@ -71,7 +71,7 @@ Das Backend öffnet die bestehende Microsoft-Schnittstelle `\\.\XboxGIP`. Es ins
 
 ## 🧪 Geprüft
 
-Der Release-Build wurde lokal ohne Fehler und Warnungen gebaut. Die Protokollprüfung umfasst 1.626 Assertions; die Geräteerkennung wurde mit einem angeschlossenen Xbox-Controller geprüft. Tray-Icon und Rechtsklick-Menü wurden vom Nutzer bestätigt. Die LED-Vorschau ist eine Darstellung der gewählten Einstellung und keine Messung der tatsächlichen Leuchtstärke.
+Der Release-Build wurde lokal ohne Fehler und Warnungen gebaut. Die Protokoll- und Einstellungsprüfung umfasst 1.627 Assertions; die Geräteerkennung wurde mit einem angeschlossenen Xbox-Controller geprüft. Tray-Icon und Rechtsklick-Menü wurden vom Nutzer bestätigt. Die LED-Vorschau ist eine Darstellung der gewählten Einstellung und keine Messung der tatsächlichen Leuchtstärke.
 
 ## 💚 Danke an das Originalprojekt
 
@@ -86,3 +86,11 @@ Danke auch an die Teams hinter **WinUI**, **Windows App SDK** und **.NET**, auf 
 ## 📄 Lizenz
 
 MIT; siehe `LICENSE` und `THIRD-PARTY-NOTICES.txt`. Die enthaltenen Microsoft-Laufzeitkomponenten unterliegen ihren jeweiligen Lizenzen.
+
+## 📦 Kompakte Ausgabe ab 1.1
+
+Die selbstständige EXE ist rund **33,8 MiB** groß. Der Download enthält vier Dateien: EXE, Kurzanleitung und zwei Lizenztexte. Beim ersten Start werden rund **64,4 MiB** Laufzeitdateien nach `%TEMP%\.net\Luma` entpackt und danach wiederverwendet. EXE plus aktueller Cache benötigen damit etwa **98 MiB**, statt zuvor rund 232 MiB im Programmordner. Alte Versions-Caches können zusätzlichen Platz belegen.
+
+Dafür verwendet Luma das gezielte WinUI-Paket statt des vollständigen Windows-App-SDK-Pakets, komprimiertes Single-File-Publishing und partielles .NET-Trimming. Die Einstellungen verwenden generierten JSON-Serialisierungscode. Ein Entwickler-SDK oder eine separat installierte .NET-Laufzeit ist zum Starten weiterhin nicht erforderlich.
+
+Der verkleinerte Build wurde mit echter WinUI-Oberfläche, Controller-Erkennung und dem Laden der gespeicherten Einstellung geprüft. Der Linker meldet zwei Warnungen aus Microsofts Windows-/WinRT-Projektionen; weitere Controller- und Windows-Konfigurationen wurden nicht umfassend getestet.

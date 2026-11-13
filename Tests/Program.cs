@@ -27,7 +27,11 @@ Reject(() => LedPacket.Create(1, 0, 1, 20));
 Reject(() => LedPacket.Create(1, 1, 7, 20));
 Reject(() => LedPacket.Create(1, 1, 1, -1));
 Reject(() => LedPacket.Create(1, 1, 1, 101));
-Console.WriteLine($"PASS: {checks} protocol checks");
+var saved = new LedSettings { Brightness = 13, Enabled = false, Mode = 8, AutoApply = false, CloseToTray = true };
+var json = System.Text.Json.JsonSerializer.Serialize(saved, SettingsJsonContext.Default.LedSettings);
+var restored = System.Text.Json.JsonSerializer.Deserialize(json, SettingsJsonContext.Default.LedSettings)!;
+Check(restored.Brightness == 13 && !restored.Enabled && restored.Mode == 8 && !restored.AutoApply && restored.CloseToTray, "Source-generated settings must preserve all values");
+Console.WriteLine($"PASS: {checks} protocol/settings checks");
 if (args.Contains("--discover"))
 {
  using var backend = new GipController();
