@@ -20,8 +20,9 @@ public sealed partial class MainWindow : Window
     private readonly DispatcherTimer reconnect = new() { Interval = TimeSpan.FromSeconds(8) };
     private NativeTray? tray;
     private NativeWheelInput? nativeWheel;
+    private Microsoft.UI.Input.InputPointerSource? pointerSource;
     private bool syncingScrollBar;
-    private ulong wheelTimestamp;
+    private ulong nativePacket;
     private bool initializing = true, refreshing, exiting;
     private List<ulong> devices = new();
     private ulong selected;
@@ -45,12 +46,22 @@ public sealed partial class MainWindow : Window
             if (AppWindow.Presenter is OverlappedPresenter sizedPresenter)
                 sizedPresenter.PreferredMinimumWidth = (int)(380 * scale);
             UpdateScrollBar();
+            nativeWheel?.Refresh();
+            try
+            {
+                pointerSource = Microsoft.UI.Input.InputPointerSource.GetForIsland(Root.XamlRoot.ContentIsland);
+                pointerSource.PointerWheelChanged += IslandWheelChanged;
+                ScrollDiagnostics.Write("Loaded: island wheel handler attached");
+            }
+            catch (Exception error) { ScrollDiagnostics.Write($"Island attachment failed: {error}"); }
         };
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "Luma.ico"));
         if (AppWindow.Presenter is OverlappedPresenter presenter) presenter.PreferredMinimumWidth = 380;
         MainScroll.ExtentChanged += (_, _) => UpdateScrollBar();
         MainScroll.SizeChanged += (_, _) => UpdateScrollBar();
-        MainScroll.ViewChanged += (_, _) => UpdateScrollBar();
+        MainScroll.ViewChanged += (_, _) => { UpdateScrollBar(); LogScroll("view"); };
+        MainScroll.ScrollCompleted += (_, e) => LogScroll($"completed id={e.CorrelationId}");
+        Root.AddHandler(UIElement.PointerWheelChangedEvent, new PointerEventHandler(RoutedWheelChanged), true);
         ContentPanel.SizeChanged += (_, _) => UpdateScrollBar();
         PageScrollBar.ValueChanged += (_, args) =>
         {
@@ -58,7 +69,7 @@ public sealed partial class MainWindow : Window
             wheel.Reset();
             ScrollTo(args.NewValue);
         };
-        try { nativeWheel = new NativeWheelInput(WinRT.Interop.WindowNative.GetWindowHandle(this), HandleNativeWheel); }
+        try { nativeWheel = new NativeWheelInput(WinRT.Interop.WindowNative.GetWindowHandle(this), HandleRawWheel, CanScrollPage); }
         catch (Exception error) { App.LogStartupError(error); }
         AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         AppWindow.TitleBar.ButtonForegroundColor = Colors.White;
@@ -88,6 +99,7 @@ public sealed partial class MainWindow : Window
     {
         if (exiting && tray == null) return;
         exiting = true; reconnect.Stop(); debounce.Stop(); nativeWheel?.Dispose(); nativeWheel = null; tray?.Dispose(); tray = null;
+        if (pointerSource != null) { pointerSource.PointerWheelChanged -= IslandWheelChanged; pointerSource = null; }
         // Never dispose an active native I/O handle on the UI thread.
         _ = Task.Run(async () => { await ioGate.WaitAsync(); try { backend.Dispose(); } finally { ioGate.Release(); } });
     }
@@ -166,23 +178,52 @@ public sealed partial class MainWindow : Window
         Brightness.IsEnabled = settings.Enabled;
         Modes.IsEnabled = settings.Enabled;
     }
-    private bool HandleNativeWheel(int delta)
+    private void IslandWheelChanged(Microsoft.UI.Input.InputPointerSource sender, Microsoft.UI.Input.PointerEventArgs args)
+    {
+        var point = args.CurrentPoint;
+        LogScroll($"island delta={point.Properties.MouseWheelDelta} handled={args.Handled} timestamp={point.Timestamp}");
+        if (!point.Properties.IsHorizontalMouseWheel && CanScrollPage())
+        {
+            if (nativeWheel?.RawRegistered != true) HandleWheel(point.Timestamp, point.Properties.MouseWheelDelta);
+            args.Handled = true;
+        }
+    }
+    private void RoutedWheelChanged(object sender, PointerRoutedEventArgs args)
+    {
+        var point = args.GetCurrentPoint(Root);
+        LogScroll($"routed delta={point.Properties.MouseWheelDelta} handled={args.Handled} timestamp={point.Timestamp}");
+        if (!point.Properties.IsHorizontalMouseWheel && CanScrollPage())
+        {
+            if (nativeWheel?.RawRegistered != true) HandleWheel(point.Timestamp, point.Properties.MouseWheelDelta);
+            args.Handled = true;
+        }
+    }
+    private bool CanScrollPage() => !exiting && Root.XamlRoot != null && !Modes.IsDropDownOpen && !Controllers.IsDropDownOpen;
+    private bool HandleRawWheel(int delta)
+    {
+        nativePacket = Math.Max(nativePacket + 1, (ulong)Environment.TickCount64 * 1000);
+        ulong timestamp = nativePacket;
+        return DispatcherQueue.TryEnqueue(() => { if (CanScrollPage()) HandleWheel(timestamp, delta); });
+    }
+    private bool HandleWheel(ulong timestamp, int delta)
     {
         // A popup is a separate scrolling surface; keep its list usable.
         if (exiting || Root.XamlRoot == null || Modes.IsDropDownOpen || Controllers.IsDropDownOpen) return false;
-        // Use a distinct timestamp for every removed queue packet, including
-        // multiple high-resolution wheel packets sharing a Windows millisecond.
-        wheelTimestamp = Math.Max(wheelTimestamp + 1, (ulong)Environment.TickCount64 * 1000);
-        ulong packetTimestamp = wheelTimestamp;
-        return DispatcherQueue.TryEnqueue(() =>
-        {
-            if (!exiting && wheel.TryAdvance(packetTimestamp, delta,
-                MainScroll.VerticalOffset, MainScroll.ScrollableHeight, out double target)) ScrollTo(target);
-        });
+        // Both routed and island events can represent the same pointer packet.
+        if (wheel.TryAdvance(timestamp, delta, MainScroll.VerticalOffset, MainScroll.ScrollableHeight, out double target)) ScrollTo(target);
+        return true;
     }
-    private void ScrollTo(double target) =>
-        MainScroll.ScrollTo(MainScroll.HorizontalOffset, Math.Clamp(target, 0, MainScroll.ScrollableHeight),
+    private void ScrollTo(double target)
+    {
+        int id = MainScroll.ScrollTo(MainScroll.HorizontalOffset, Math.Clamp(target, 0, MainScroll.ScrollableHeight),
             new ScrollingScrollOptions(ScrollingAnimationMode.Disabled, ScrollingSnapPointsMode.Ignore));
+        LogScroll($"request target={target:F1} id={id}");
+    }
+    private void LogScroll(string message)
+    {
+        if (!ScrollDiagnostics.IsEnabled) return;
+        ScrollDiagnostics.Write($"{message} offset={MainScroll.VerticalOffset:F1} max={MainScroll.ScrollableHeight:F1} extent={MainScroll.ExtentHeight:F1} viewport={MainScroll.ViewportHeight:F1} content={ContentPanel.ActualHeight:F1} modesOpen={Modes.IsDropDownOpen} controllersOpen={Controllers.IsDropDownOpen}");
+    }
     private void UpdateScrollBar()
     {
         if (syncingScrollBar) return;
