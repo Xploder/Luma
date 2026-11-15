@@ -45,11 +45,17 @@ Close other LED-control utilities if they keep overwriting your setting. Steam i
 - **Light mode:** steady, slow/fast pulse, slow/fast blink, charging blink, or fade in. Firmware support varies.
 - **Mouse wheel:** scroll the main window over controls and empty areas. Scrolling over the brightness slider or a closed dropdown does not change its value. Open dropdown lists retain their own scrolling.
 - **Hide to tray:** hide the window and reopen it from the green Luma icon. Right-click for presets, LED on/off, and Quit. Windows may initially put the icon in its tray overflow menu.
-- **Apply when connected:** apply the shared saved setting to newly detected controllers. Reconnection is checked every eight seconds.
+- **Automatic discovery:** Off, 8 / 15 / 30 / 60 seconds, or 5 minutes. The default remains 8 seconds. Each interval starts after the previous search finishes; searches never overlap. Changes are saved and take effect immediately.
+- **Off:** stops the discovery timer entirely, including in the tray. A single startup search and the manual refresh button remain available. A search already in progress is allowed to finish. Reconnected controllers are detected only on the next manual search or app restart.
+- **Apply when connected:** apply the shared saved setting to newly detected controllers. This depends on discovery; it does not run a separate polling loop.
 - **Start with Windows:** optional and initially disabled. This creates a startup entry for the current Windows user. After moving the app, toggle this setting off and back on to update its path.
 - **Keep running in tray when closed:** close the window without quitting. Use **Quit** to exit completely.
 
 Settings are stored in `%LOCALAPPDATA%\LumaXboxLed\settings.json`. One shared default intentionally survives changing XboxGIP device IDs. Manual edits affect the selected controller; newly detected controllers receive the shared default when automatic application is enabled.
+
+### Idle performance
+
+Luma sends LED commands when settings change or when a newly detected controller needs its saved setting. It does not continuously resend brightness. With automatic discovery off, no periodic controller searches or app-owned repeating timers run while idle. Windows, WinUI and .NET still consume memory and may perform occasional work; this is not a guarantee of literally zero CPU use. Tray mode hides the interface, and foreground-only mouse input is not captured while another application is active. The wheel input path uses a stack buffer to avoid per-movement heap allocations with high-polling-rate mice. You can quit Luma after applying a setting; automatic reapplication on reconnection then requires starting it again.
 
 ## 🌍 Language support
 

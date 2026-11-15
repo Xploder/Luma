@@ -31,6 +31,17 @@ var saved = new LedSettings { Brightness = 13, Enabled = false, Mode = 8, AutoAp
 var json = System.Text.Json.JsonSerializer.Serialize(saved, SettingsJsonContext.Default.LedSettings);
 var restored = System.Text.Json.JsonSerializer.Deserialize(json, SettingsJsonContext.Default.LedSettings)!;
 Check(restored.Brightness == 13 && !restored.Enabled && restored.Mode == 8 && !restored.AutoApply && restored.CloseToTray, "Source-generated settings must preserve all values");
+Check(System.Text.Json.JsonSerializer.Deserialize("{\"Brightness\":13}", SettingsJsonContext.Default.LedSettings)!.RefreshIntervalSeconds == 8, "Existing settings must retain the eight-second discovery default");
+foreach (int seconds in LedSettings.RefreshIntervals)
+{
+ saved.RefreshIntervalSeconds = seconds;
+ var intervalJson = System.Text.Json.JsonSerializer.Serialize(saved, SettingsJsonContext.Default.LedSettings);
+ var intervalSettings = System.Text.Json.JsonSerializer.Deserialize(intervalJson, SettingsJsonContext.Default.LedSettings)!;
+ Check(intervalSettings.RefreshIntervalSeconds == seconds, "Discovery interval, including Off, must survive a restart");
+ Check(LedSettings.ValidRefreshInterval(seconds) == seconds, "Supported discovery interval must remain unchanged");
+}
+foreach (int invalid in new[] { -1, int.MinValue, 1, 7, 3600, int.MaxValue })
+ Check(LedSettings.ValidRefreshInterval(invalid) == 8, "Invalid discovery intervals must use a safe default");
 Console.WriteLine($"PASS: {checks} protocol/settings checks");
 var previousCulture = System.Globalization.CultureInfo.CurrentUICulture;
 try
@@ -41,6 +52,8 @@ try
   bool german = culture.StartsWith("de");
   Check(UiText.T("Helligkeit") == (german ? "Helligkeit" : "Brightness"), $"UI culture fallback: {culture}");
   Check(UiText.T("Luma öffnen") == (german ? "Luma öffnen" : "Open Luma"), $"Tray localization: {culture}");
+  Check(UiText.T("Automatisch suchen") == (german ? "Automatisch suchen" : "Automatic discovery"), $"Discovery localization: {culture}");
+  Check(UiText.T("Aus: Suche nur beim Start und manuell.") == (german ? "Aus: Suche nur beim Start und manuell." : "Off: search only at startup and manually."), $"Disabled discovery explanation: {culture}");
  }
 }
 finally { System.Globalization.CultureInfo.CurrentUICulture = previousCulture; }

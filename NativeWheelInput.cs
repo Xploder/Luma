@@ -85,24 +85,23 @@ internal sealed class NativeWheelInput : IDisposable
         GC.KeepAlive(callback);
     }
 
-    private void ReadRawWheel(IntPtr input)
+    private unsafe void ReadRawWheel(IntPtr input)
     {
-        uint size = 0, headerSize = (uint)(8 + IntPtr.Size * 2);
-        if (GetRawInputData(input, 0x10000003, IntPtr.Zero, ref size, headerSize) == uint.MaxValue
-            || size < headerSize + 8 || size > 65536) return;
-        IntPtr buffer = Marshal.AllocHGlobal((int)size);
-        try
-        {
-            if (GetRawInputData(input, 0x10000003, buffer, ref size, headerSize) == uint.MaxValue
-                || Marshal.ReadInt32(buffer) != 0 /* RIM_TYPEMOUSE */) return;
-            int buttons = (ushort)Marshal.ReadInt16(buffer, (int)headerSize + 4);
-            if ((buttons & 0x0400 /* RI_MOUSE_WHEEL */) == 0) return;
-            if (!GetCursorPos(out var cursor) || GetAncestor(WindowFromPoint(cursor), 2 /* GA_ROOT */) != window) return;
-            int delta = Marshal.ReadInt16(buffer, (int)headerSize + 6);
-            ScrollDiagnostics.Write($"raw wheel delta={delta} allowed={canScroll()}");
-            if (delta != 0 && canScroll()) wheel(delta);
-        }
-        finally { Marshal.FreeHGlobal(buffer); }
+        // RAWINPUTHEADER + RAWMOUSE is 48 bytes on x64. A fixed stack buffer
+        // avoids a heap allocation and size-query call for every mouse movement,
+        // particularly useful with high-polling-rate gaming mice.
+        byte* storage = stackalloc byte[64];
+        IntPtr buffer = (IntPtr)storage;
+        uint size = 64, headerSize = (uint)(8 + IntPtr.Size * 2);
+        uint read = GetRawInputData(input, 0x10000003, buffer, ref size, headerSize);
+        if (read == uint.MaxValue || read < headerSize + 8
+            || Marshal.ReadInt32(buffer) != 0 /* RIM_TYPEMOUSE */) return;
+        int buttons = (ushort)Marshal.ReadInt16(buffer, (int)headerSize + 4);
+        if ((buttons & 0x0400 /* RI_MOUSE_WHEEL */) == 0) return;
+        if (!GetCursorPos(out var cursor) || GetAncestor(WindowFromPoint(cursor), 2 /* GA_ROOT */) != window) return;
+        int delta = Marshal.ReadInt16(buffer, (int)headerSize + 6);
+        ScrollDiagnostics.Write($"raw wheel delta={delta} allowed={canScroll()}");
+        if (delta != 0 && canScroll()) wheel(delta);
         // Always continue WM_INPUT to DefWindowProc for foreground cleanup.
     }
 

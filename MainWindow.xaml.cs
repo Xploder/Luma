@@ -17,7 +17,7 @@ public sealed partial class MainWindow : Window
     private readonly GipController backend = new();
     private readonly SemaphoreSlim ioGate = new(1, 1);
     private readonly DispatcherTimer debounce = new() { Interval = TimeSpan.FromMilliseconds(160) };
-    private readonly DispatcherTimer reconnect = new() { Interval = TimeSpan.FromSeconds(8) };
+    private readonly DispatcherTimer reconnect = new();
     private NativeTray? tray;
     private NativeWheelInput? nativeWheel;
     private Microsoft.UI.Input.InputPointerSource? pointerSource;
@@ -79,6 +79,9 @@ public sealed partial class MainWindow : Window
         LedEnabled.IsOn = settings.Enabled;
         AutoApply.IsOn = settings.AutoApply;
         CloseToTray.IsOn = settings.CloseToTray;
+        foreach (string label in new[] { T("Aus"), T("8 Sekunden"), T("15 Sekunden"), T("30 Sekunden"), T("1 Minute"), T("5 Minuten") }) RefreshInterval.Items.Add(label);
+        RefreshInterval.SelectedIndex = Array.IndexOf(LedSettings.RefreshIntervals, settings.RefreshIntervalSeconds);
+        UpdateRefreshHint();
         Startup.IsOn = !demo && LedSettings.IsStartupEnabled();
         Startup.IsEnabled = !demo;
         tray = new NativeTray(WinRT.Interop.WindowNative.GetWindowHandle(this), ShowWindow, () => LedEnabled.IsOn = !LedEnabled.IsOn, SetPreset, Quit);
@@ -87,10 +90,10 @@ public sealed partial class MainWindow : Window
         AppWindow.Closing += (_, e) => { if (!exiting && settings.CloseToTray && tray.IsAvailable) { e.Cancel = true; HideToTray(); } };
         Closed += (_, _) => Shutdown();
         debounce.Tick += async (_, _) => { debounce.Stop(); await SendAsync(); };
-        reconnect.Tick += async (_, _) => await RefreshAsync(false);
+        reconnect.Tick += async (_, _) => { reconnect.Stop(); await RefreshAsync(false); };
         initializing = false;
         UpdateControls();
-        DispatcherQueue.TryEnqueue(async () => { await RefreshAsync(true); if (!exiting) reconnect.Start(); });
+        DispatcherQueue.TryEnqueue(async () => await RefreshAsync(true));
     }
     public void HideToTray() => tray?.Hide();
     private void ShowWindow() { tray?.Show(); Activate(); }
@@ -113,6 +116,7 @@ public sealed partial class MainWindow : Window
     private async Task RefreshAsync(bool manual)
     {
         if (refreshing || exiting) return;
+        reconnect.Stop();
         refreshing = true; RefreshButton.IsEnabled = false;
         try
         {
@@ -155,8 +159,24 @@ public sealed partial class MainWindow : Window
             SetStatus(T("Warte auf einen Controller …"), false);
             if (manual) ShowNotice(T("Controller nicht erreichbar"), ex.Message);
         }
-        finally { refreshing = false; if (!exiting) RefreshButton.IsEnabled = true; }
+        finally { refreshing = false; if (!exiting) RefreshButton.IsEnabled = true; UpdateRefreshSchedule(); }
     }
+    private void UpdateRefreshSchedule()
+    {
+        reconnect.Stop();
+        if (exiting || refreshing || settings.RefreshIntervalSeconds == 0) return;
+        reconnect.Interval = TimeSpan.FromSeconds(settings.RefreshIntervalSeconds);
+        reconnect.Start();
+    }
+    private void RefreshInterval_Changed(object sender, SelectionChangedEventArgs e)
+    {
+        if (initializing || RefreshInterval.SelectedIndex < 0) return;
+        settings.RefreshIntervalSeconds = LedSettings.RefreshIntervals[RefreshInterval.SelectedIndex];
+        Save(); UpdateRefreshHint(); UpdateRefreshSchedule();
+    }
+    private void UpdateRefreshHint() => RefreshHint.Text = settings.RefreshIntervalSeconds == 0
+        ? T("Aus: Suche nur beim Start und manuell.")
+        : T("Neue Controller werden im gewählten Abstand erkannt.");
     private void Brightness_Changed(object sender, RangeBaseValueChangedEventArgs e) { if (!initializing) Changed(); }
     private void Led_Toggled(object sender, RoutedEventArgs e) { if (!initializing) Changed(); }
     private void Mode_Changed(object sender, SelectionChangedEventArgs e) { if (!initializing) Changed(); }
@@ -198,7 +218,7 @@ public sealed partial class MainWindow : Window
             args.Handled = true;
         }
     }
-    private bool CanScrollPage() => !exiting && Root.XamlRoot != null && !Modes.IsDropDownOpen && !Controllers.IsDropDownOpen;
+    private bool CanScrollPage() => !exiting && Root.XamlRoot != null && !Modes.IsDropDownOpen && !Controllers.IsDropDownOpen && !RefreshInterval.IsDropDownOpen;
     private bool HandleRawWheel(int delta)
     {
         nativePacket = Math.Max(nativePacket + 1, (ulong)Environment.TickCount64 * 1000);

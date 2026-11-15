@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -176,5 +176,32 @@
   </data>
   <data name="Helligkeit {0} % · angewendet" xml:space="preserve">
     <value>Brightness {0}% · applied</value>
+  </data>
+  <data name="Intervall für automatische Controllersuche" xml:space="preserve">
+    <value>Automatic controller discovery interval</value>
+  </data>
+  <data name="5 Minuten" xml:space="preserve">
+    <value>5 minutes</value>
+  </data>
+  <data name="Neue Controller werden im gewählten Abstand erkannt." xml:space="preserve">
+    <value>New controllers are detected at the selected interval.</value>
+  </data>
+  <data name="1 Minute" xml:space="preserve">
+    <value>1 minute</value>
+  </data>
+  <data name="30 Sekunden" xml:space="preserve">
+    <value>30 seconds</value>
+  </data>
+  <data name="8 Sekunden" xml:space="preserve">
+    <value>8 seconds</value>
+  </data>
+  <data name="Automatisch suchen" xml:space="preserve">
+    <value>Automatic discovery</value>
+  </data>
+  <data name="Aus: Suche nur beim Start und manuell." xml:space="preserve">
+    <value>Off: search only at startup and manually.</value>
+  </data>
+  <data name="15 Sekunden" xml:space="preserve">
+    <value>15 seconds</value>
   </data>
 </root>

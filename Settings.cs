@@ -10,6 +10,9 @@ public sealed class LedSettings
     public byte Mode { get; set; } = 1;
     public bool AutoApply { get; set; } = true;
     public bool CloseToTray { get; set; } = true;
+    public int RefreshIntervalSeconds { get; set; } = 8;
+    public static readonly int[] RefreshIntervals = { 0, 8, 15, 30, 60, 300 };
+    public static int ValidRefreshInterval(int seconds) => RefreshIntervals.Contains(seconds) ? seconds : 8;
     public string Theme { get; set; } = "Dark";
     // A single default intentionally survives changing XboxGIP device IDs.
     public static string Folder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LumaXboxLed");
@@ -20,6 +23,7 @@ public sealed class LedSettings
         {
             var s = JsonSerializer.Deserialize(File.ReadAllText(FileName), SettingsJsonContext.Default.LedSettings) ?? new();
             s.Brightness = Math.Clamp(s.Brightness, 0, 100);
+            s.RefreshIntervalSeconds = ValidRefreshInterval(s.RefreshIntervalSeconds);
             if (!new byte[] { 1, 2, 3, 4, 8, 9, 13 }.Contains(s.Mode)) s.Mode = 1;
             return s;
         }
