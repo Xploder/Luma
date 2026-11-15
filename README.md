@@ -98,6 +98,8 @@ Thanks also to the teams behind **WinUI**, **Windows App SDK**, and **.NET**.
 
 Luma is licensed under [MIT](LICENSE), copyright 2026 Xploder. The adapted xbledctl code retains its original MIT notice. Bundled Microsoft runtime components remain subject to their respective licenses.
 
-## 1.2.1 scrolling fix
+## Scrolling implementation
 
-The main page now uses WinUI's newer `ScrollView`. Its built-in mouse-wheel handling is disabled so that one page-level handler owns wheel input. Child controls can no longer suppress scrolling just by marking an event handled. Duplicate routed packets are ignored, and rapid wheel deltas are accumulated while scrolling completes asynchronously. Touch, keyboard, scrollbar, and open-dropdown interactions retain their own handling.
+The main page uses WinUI `ScrollView` with a separate vertical scrollbar. The scrollbar remains visible whenever the content is taller than the viewport, including at the bottom of the page, and disappears once all content fits.
+
+Mouse-wheel messages are handled before XAML dispatch through a `WH_GETMESSAGE` hook scoped strictly to Luma's own UI thread. This is not a global hook and does not observe other applications. Consumed wheel packets are removed from XAML dispatch, preventing individual controls from changing brightness or swallowing the page scroll. Rapid deltas are accumulated while scrolling completes asynchronously. Open dropdown lists retain their own input handling.

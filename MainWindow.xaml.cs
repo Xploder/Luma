@@ -19,6 +19,9 @@ public sealed partial class MainWindow : Window
     private readonly DispatcherTimer debounce = new() { Interval = TimeSpan.FromMilliseconds(160) };
     private readonly DispatcherTimer reconnect = new() { Interval = TimeSpan.FromSeconds(8) };
     private NativeTray? tray;
+    private NativeWheelInput? nativeWheel;
+    private bool syncingScrollBar;
+    private ulong wheelTimestamp;
     private bool initializing = true, refreshing, exiting;
     private List<ulong> devices = new();
     private ulong selected;
@@ -41,13 +44,22 @@ public sealed partial class MainWindow : Window
             AppWindow.Resize(new SizeInt32((int)(480 * scale), (int)(610 * scale)));
             if (AppWindow.Presenter is OverlappedPresenter sizedPresenter)
                 sizedPresenter.PreferredMinimumWidth = (int)(380 * scale);
+            UpdateScrollBar();
         };
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "Luma.ico"));
         if (AppWindow.Presenter is OverlappedPresenter presenter) presenter.PreferredMinimumWidth = 380;
-        Root.AddHandler(UIElement.PointerWheelChangedEvent, new PointerEventHandler(WindowWheel), true);
-        Brightness.ForwardWheel = ScrollWheel;
-        Modes.ForwardWheel = ScrollWheel;
-        Controllers.ForwardWheel = ScrollWheel;
+        MainScroll.ExtentChanged += (_, _) => UpdateScrollBar();
+        MainScroll.SizeChanged += (_, _) => UpdateScrollBar();
+        MainScroll.ViewChanged += (_, _) => UpdateScrollBar();
+        ContentPanel.SizeChanged += (_, _) => UpdateScrollBar();
+        PageScrollBar.ValueChanged += (_, args) =>
+        {
+            if (syncingScrollBar) return;
+            wheel.Reset();
+            ScrollTo(args.NewValue);
+        };
+        try { nativeWheel = new NativeWheelInput(WinRT.Interop.WindowNative.GetWindowHandle(this), HandleNativeWheel); }
+        catch (Exception error) { App.LogStartupError(error); }
         AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         AppWindow.TitleBar.ButtonForegroundColor = Colors.White;
         foreach (var mode in modes) Modes.Items.Add(mode.Name);
@@ -75,7 +87,7 @@ public sealed partial class MainWindow : Window
     private void Shutdown()
     {
         if (exiting && tray == null) return;
-        exiting = true; reconnect.Stop(); debounce.Stop(); tray?.Dispose(); tray = null;
+        exiting = true; reconnect.Stop(); debounce.Stop(); nativeWheel?.Dispose(); nativeWheel = null; tray?.Dispose(); tray = null;
         // Never dispose an active native I/O handle on the UI thread.
         _ = Task.Run(async () => { await ioGate.WaitAsync(); try { backend.Dispose(); } finally { ioGate.Release(); } });
     }
@@ -154,23 +166,37 @@ public sealed partial class MainWindow : Window
         Brightness.IsEnabled = settings.Enabled;
         Modes.IsEnabled = settings.Enabled;
     }
-    private void WindowWheel(object sender, PointerRoutedEventArgs e) => ScrollWheel(e);
-    private void ScrollWheel(PointerRoutedEventArgs e)
+    private bool HandleNativeWheel(int delta)
     {
         // A popup is a separate scrolling surface; keep its list usable.
-        if (Modes.IsDropDownOpen || Controllers.IsDropDownOpen) return;
-        var point = e.GetCurrentPoint(Root);
-        if (point.Properties.IsHorizontalMouseWheel) return;
-        e.Handled = true;
-        // A control override and the root can see the same routed event. Process
-        // each packet once, even if a child marked it handled. ScrollView's own
-        // mouse-wheel manipulation is disabled, leaving a single input owner.
-        // Preserve pending deltas within a burst: ScrollTo completes asynchronously.
-        // After a pause, synchronize with scrollbar/touch/keyboard scrolling.
-        if (!wheel.TryAdvance(point.Timestamp, point.Properties.MouseWheelDelta,
-            MainScroll.VerticalOffset, MainScroll.ScrollableHeight, out double target)) return;
-        MainScroll.ScrollTo(MainScroll.HorizontalOffset, target,
+        if (exiting || Root.XamlRoot == null || Modes.IsDropDownOpen || Controllers.IsDropDownOpen) return false;
+        // Use a distinct timestamp for every removed queue packet, including
+        // multiple high-resolution wheel packets sharing a Windows millisecond.
+        wheelTimestamp = Math.Max(wheelTimestamp + 1, (ulong)Environment.TickCount64 * 1000);
+        ulong packetTimestamp = wheelTimestamp;
+        return DispatcherQueue.TryEnqueue(() =>
+        {
+            if (!exiting && wheel.TryAdvance(packetTimestamp, delta,
+                MainScroll.VerticalOffset, MainScroll.ScrollableHeight, out double target)) ScrollTo(target);
+        });
+    }
+    private void ScrollTo(double target) =>
+        MainScroll.ScrollTo(MainScroll.HorizontalOffset, Math.Clamp(target, 0, MainScroll.ScrollableHeight),
             new ScrollingScrollOptions(ScrollingAnimationMode.Disabled, ScrollingSnapPointsMode.Ignore));
+    private void UpdateScrollBar()
+    {
+        if (syncingScrollBar) return;
+        syncingScrollBar = true;
+        try
+        {
+            PageScrollBar.Maximum = Math.Max(0, MainScroll.ScrollableHeight);
+            PageScrollBar.ViewportSize = MainScroll.ViewportHeight;
+            PageScrollBar.LargeChange = Math.Max(48, MainScroll.ViewportHeight * 0.9);
+            PageScrollBar.Value = MainScroll.VerticalOffset;
+            PageScrollBar.Visibility = MainScroll.ExtentHeight > MainScroll.ViewportHeight
+                ? Visibility.Visible : Visibility.Collapsed;
+        }
+        finally { syncingScrollBar = false; }
     }
     private async Task SendAsync()
     {

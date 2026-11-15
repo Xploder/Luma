@@ -5,6 +5,7 @@ internal sealed class WheelScrollState
     private bool hasPacket;
     private ulong lastTimestamp;
     private double target;
+    internal void Reset() => hasPacket = false;
 
     internal bool TryAdvance(ulong timestamp, int delta, double currentOffset, double maximum, out double nextOffset)
     {
