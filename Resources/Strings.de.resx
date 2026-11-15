@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="Dauerhaft" xml:space="preserve">
+    <value>Dauerhaft</value>
+  </data>
+  <data name="Sanft pulsieren" xml:space="preserve">
+    <value>Sanft pulsieren</value>
+  </data>
+  <data name="Schnell pulsieren" xml:space="preserve">
+    <value>Schnell pulsieren</value>
+  </data>
+  <data name="Langsam blinken" xml:space="preserve">
+    <value>Langsam blinken</value>
+  </data>
+  <data name="Schnell blinken" xml:space="preserve">
+    <value>Schnell blinken</value>
+  </data>
+  <data name="Ladeanimation" xml:space="preserve">
+    <value>Ladeanimation</value>
+  </data>
+  <data name="Einblenden" xml:space="preserve">
+    <value>Einblenden</value>
+  </data>
+  <data name="Helligkeit" xml:space="preserve">
+    <value>Helligkeit</value>
+  </data>
+  <data name="Einstellungen" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Lichtmodus" xml:space="preserve">
+    <value>Lichtmodus</value>
+  </data>
+  <data name="Ein" xml:space="preserve">
+    <value>Ein</value>
+  </data>
+  <data name="Aus" xml:space="preserve">
+    <value>Aus</value>
+  </data>
+  <data name="In den Tray" xml:space="preserve">
+    <value>In den Tray</value>
+  </data>
+  <data name="Beenden" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="Nacht · 10 %" xml:space="preserve">
+    <value>Nacht · 10 %</value>
+  </data>
+  <data name="Entspannt · 30 %" xml:space="preserve">
+    <value>Entspannt · 30 %</value>
+  </data>
+  <data name="Hell · 100 %" xml:space="preserve">
+    <value>Hell · 100 %</value>
+  </data>
+  <data name="Controller auswählen" xml:space="preserve">
+    <value>Controller auswählen</value>
+  </data>
+  <data name="Controller wird gesucht …" xml:space="preserve">
+    <value>Controller wird gesucht …</value>
+  </data>
+  <data name="Controller erneut suchen" xml:space="preserve">
+    <value>Controller erneut suchen</value>
+  </data>
+  <data name="USB oder Xbox Wireless Adapter" xml:space="preserve">
+    <value>USB oder Xbox Wireless Adapter</value>
+  </data>
+  <data name="Xbox-Logo einschalten" xml:space="preserve">
+    <value>Xbox-Logo einschalten</value>
+  </data>
+  <data name="LED-Helligkeit in Prozent" xml:space="preserve">
+    <value>LED-Helligkeit in Prozent</value>
+  </data>
+  <data name="Beim Verbinden anwenden" xml:space="preserve">
+    <value>Beim Verbinden anwenden</value>
+  </data>
+  <data name="Beim Verbinden automatisch anwenden" xml:space="preserve">
+    <value>Beim Verbinden automatisch anwenden</value>
+  </data>
+  <data name="Mit Windows starten" xml:space="preserve">
+    <value>Mit Windows starten</value>
+  </data>
+  <data name="Beim Schließen im Tray weiterlaufen" xml:space="preserve">
+    <value>Beim Schließen im Tray weiterlaufen</value>
+  </data>
+  <data name="Tray-Symbol nicht verfügbar" xml:space="preserve">
+    <value>Tray-Symbol nicht verfügbar</value>
+  </data>
+  <data name="Windows hat das Tray-Symbol nicht angenommen. Luma bleibt als Fenster geöffnet." xml:space="preserve">
+    <value>Windows hat das Tray-Symbol nicht angenommen. Luma bleibt als Fenster geöffnet.</value>
+  </data>
+  <data name="Kein Controller verbunden" xml:space="preserve">
+    <value>Kein Controller verbunden</value>
+  </data>
+  <data name="Vorschaumodus · keine Hardwarebefehle" xml:space="preserve">
+    <value>Vorschaumodus · keine Hardwarebefehle</value>
+  </data>
+  <data name="Verbunden über XboxGIP · USB / Xbox Wireless" xml:space="preserve">
+    <value>Verbunden über XboxGIP · USB / Xbox Wireless</value>
+  </data>
+  <data name="USB oder Xbox Wireless Adapter verbinden · Bluetooth unterstützt keine LED-Steuerung" xml:space="preserve">
+    <value>USB oder Xbox Wireless Adapter verbinden · Bluetooth unterstützt keine LED-Steuerung</value>
+  </data>
+  <data name="Vorschaumodus · es wird kein Controller gesteuert" xml:space="preserve">
+    <value>Vorschaumodus · es wird kein Controller gesteuert</value>
+  </data>
+  <data name="Bereit · Änderungen werden direkt angewendet" xml:space="preserve">
+    <value>Bereit · Änderungen werden direkt angewendet</value>
+  </data>
+  <data name="Warte auf einen Controller …" xml:space="preserve">
+    <value>Warte auf einen Controller …</value>
+  </data>
+  <data name="Gespeicherte Einstellung angewendet" xml:space="preserve">
+    <value>Gespeicherte Einstellung angewendet</value>
+  </data>
+  <data name="USB oder Xbox Wireless Adapter verbinden. Bluetooth wird nicht unterstützt." xml:space="preserve">
+    <value>USB oder Xbox Wireless Adapter verbinden. Bluetooth wird nicht unterstützt.</value>
+  </data>
+  <data name="Controller nicht erreichbar" xml:space="preserve">
+    <value>Controller nicht erreichbar</value>
+  </data>
+  <data name="Gespeichert · wird beim nächsten Verbinden angewendet" xml:space="preserve">
+    <value>Gespeichert · wird beim nächsten Verbinden angewendet</value>
+  </data>
+  <data name="Gespeichert · automatisches Anwenden ist deaktiviert" xml:space="preserve">
+    <value>Gespeichert · automatisches Anwenden ist deaktiviert</value>
+  </data>
+  <data name="LED ausgeschaltet" xml:space="preserve">
+    <value>LED ausgeschaltet</value>
+  </data>
+  <data name="Änderung konnte nicht angewendet werden" xml:space="preserve">
+    <value>Änderung konnte nicht angewendet werden</value>
+  </data>
+  <data name="Verbindung prüfen" xml:space="preserve">
+    <value>Verbindung prüfen</value>
+  </data>
+  <data name="Autostart nicht geändert" xml:space="preserve">
+    <value>Autostart nicht geändert</value>
+  </data>
+  <data name="Einstellung nicht gespeichert" xml:space="preserve">
+    <value>Einstellung nicht gespeichert</value>
+  </data>
+  <data name="XboxGIP ist nicht erreichbar. Controller über USB oder Xbox Wireless Adapter verbinden." xml:space="preserve">
+    <value>XboxGIP ist nicht erreichbar. Controller über USB oder Xbox Wireless Adapter verbinden.</value>
+  </data>
+  <data name="Kein Controller verbunden." xml:space="preserve">
+    <value>Kein Controller verbunden.</value>
+  </data>
+  <data name="LED-Befehl wurde nicht vollständig übertragen." xml:space="preserve">
+    <value>LED-Befehl wurde nicht vollständig übertragen.</value>
+  </data>
+  <data name="Der Controller antwortet nicht. Bitte erneut verbinden." xml:space="preserve">
+    <value>Der Controller antwortet nicht. Bitte erneut verbinden.</value>
+  </data>
+  <data name="Luma · Controller-Licht" xml:space="preserve">
+    <value>Luma · Controller-Licht</value>
+  </data>
+  <data name="Luma öffnen" xml:space="preserve">
+    <value>Luma öffnen</value>
+  </data>
+  <data name="LED ein / aus" xml:space="preserve">
+    <value>LED ein / aus</value>
+  </data>
+  <data name="Tray-Fenster konnte nicht eingerichtet werden." xml:space="preserve">
+    <value>Tray-Fenster konnte nicht eingerichtet werden.</value>
+  </data>
+  <data name="Helligkeit {0} % · angewendet" xml:space="preserve">
+    <value>Helligkeit {0} % · angewendet</value>
+  </data>
+</root>

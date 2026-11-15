@@ -32,6 +32,19 @@ var json = System.Text.Json.JsonSerializer.Serialize(saved, SettingsJsonContext.
 var restored = System.Text.Json.JsonSerializer.Deserialize(json, SettingsJsonContext.Default.LedSettings)!;
 Check(restored.Brightness == 13 && !restored.Enabled && restored.Mode == 8 && !restored.AutoApply && restored.CloseToTray, "Source-generated settings must preserve all values");
 Console.WriteLine($"PASS: {checks} protocol/settings checks");
+var previousCulture = System.Globalization.CultureInfo.CurrentUICulture;
+try
+{
+ foreach (var culture in new[] { "de-DE", "de-AT", "en-US", "en-GB", "fr-FR" })
+ {
+  System.Globalization.CultureInfo.CurrentUICulture = new(culture);
+  bool german = culture.StartsWith("de");
+  Check(UiText.T("Helligkeit") == (german ? "Helligkeit" : "Brightness"), $"UI culture fallback: {culture}");
+  Check(UiText.T("Luma öffnen") == (german ? "Luma öffnen" : "Open Luma"), $"Tray localization: {culture}");
+ }
+}
+finally { System.Globalization.CultureInfo.CurrentUICulture = previousCulture; }
+Console.WriteLine("PASS: German, English, and fallback localization");
 if (args.Contains("--discover"))
 {
  using var backend = new GipController();

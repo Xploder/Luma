@@ -1,96 +1,99 @@
 <div align="center">
 
-<img src="docs/luma-mark.svg" width="96" alt="Luma Logo" />
+<img src="docs/luma-mark.svg" width="96" alt="Luma logo" />
 
 # ✨ Luma
 
-### Weniger Licht. Mehr Spiel.
+### Less light. More play.
 
-Dein Xbox-Controller muss nachts kein Flutlicht sein. 🎮🌙
+Your Xbox controller does not need to be a floodlight. 🎮🌙
 
-**Windows 11 · WinUI 3 · .NET 10 · MIT**
+**Windows 11 · WinUI 3 · .NET 10 · English / Deutsch · MIT**
 
 </div>
 
 ---
 
-## 🎮 Kleine App, angenehmeres Gaming
+## 🎮 A small app for more comfortable gaming
 
-Luma regelt die Helligkeit des Xbox-Logos direkt aus einer nativen Windows-Oberfläche oder dem Tray. Entstanden als Vibe-Coding-Projekt mit Codex, gebaut für die Abende, an denen selbst eine einzelne LED zu hell ist.
+Luma adjusts the Xbox logo LED from a compact native Windows window or the system tray. Built with Codex as a vibe-coding project for evenings when even a single LED feels too bright.
 
-| Funktion | Was du bekommst |
+| Feature | What you get |
 | --- | --- |
-| 🌙 Helligkeit | Regler von 0–100 % und Presets für Nacht, entspanntes Spielen und volle Helligkeit |
-| 💡 Lichtmodi | Ein/Aus, Dauerlicht, Pulsieren und Blinken |
-| 🍃 Tray | Eigenes grünes Luma-Icon mit Schnellaktionen per Rechtsklick |
-| 🔁 Wiederverbinden | Letzte Einstellung automatisch auf neu erkannte Controller anwenden |
-| 🚀 Autostart | Optional mit Windows im Tray starten |
-| 🖥️ Native UI | WinUI 3 mit dunkler Oberfläche und LED-Vorschau |
+| 🌙 Brightness | 0–100% slider and Night, Relaxed, and Full presets |
+| 💡 Light modes | On/off, steady light, pulses, and blinking |
+| 🍃 System tray | A green Luma icon with quick actions and a Quit command |
+| 🔁 Reconnect | Automatically apply the saved setting when a controller reconnects |
+| 🚀 Startup | Optionally start with Windows, hidden in the tray |
+| 🖥️ Compact UI | Small controls and settings directly in the main window |
+| 🌍 Languages | German on German Windows installations; English otherwise |
 
-> **Verbindung:** USB oder Microsoft Xbox Wireless Adapter. Über Bluetooth lässt sich die Logo-LED auf diesem Weg nicht steuern.
+> **Connection:** USB or the Microsoft Xbox Wireless Adapter. This LED control method does not support Bluetooth.
 
-## 🧱 Unter der Haube
+## 🚀 Quick start
 
-Eine native Windows-11-App auf Basis von **WinUI 3, Windows App SDK 2.6.5 und .NET 10**. Das XboxGIP-Protokoll basiert auf [xbledctl](https://github.com/Leclowndu93150/xbledctl) von Leclowndu93150 (MIT).
+1. Download the Windows x64 ZIP from [Releases](https://github.com/Xploder/Luma/releases/latest).
+2. Extract it and run **Luma.exe**. The runtime is bundled; a separate .NET installation is not required.
+3. Connect your controller, choose a brightness, and enjoy a less distracting LED.
 
-## 🚀 Schnellstart
+Close other LED-control utilities if they keep overwriting your setting. Steam is not required. Preserve the included license files when sharing the app.
 
-Das komplette Archiv `Luma-Windows-x64.zip` entpacken und `Luma.exe` öffnen. Ab Version 1.1 enthält die einzelne EXE die benötigten Laufzeitdateien. LICENSE und THIRD-PARTY-NOTICES.txt gehören zur Weitergabe dazu. .NET und Windows-App-SDK-Laufzeit sind enthalten; es muss kein Entwickler-SDK installiert werden.
+## 🎛️ Controls and settings
 
-Controller per USB oder Microsoft Xbox Wireless Adapter verbinden. Bluetooth unterstützt die hier verwendete LED-Steuerung nicht. Steam wird nicht benötigt. Andere LED-Steuerungsprogramme möglichst schließen, damit sie die Einstellung nicht überschreiben.
+- **LED switch:** turn the light off while keeping the saved brightness.
+- **Brightness:** 0–100% maps to the supported protocol range of 0–47. This is the requested setting, not a measurement read back from the controller.
+- **Light mode:** steady, slow/fast pulse, slow/fast blink, charging blink, or fade in. Firmware support varies.
+- **Mouse wheel:** scroll the main window over controls and empty areas. Scrolling over the brightness slider or a closed dropdown does not change its value. Open dropdown lists retain their own scrolling.
+- **Hide to tray:** hide the window and reopen it from the green Luma icon. Right-click for presets, LED on/off, and Quit. Windows may initially put the icon in its tray overflow menu.
+- **Apply when connected:** apply the shared saved setting to newly detected controllers. Reconnection is checked every eight seconds.
+- **Start with Windows:** optional and initially disabled. This creates a startup entry for the current Windows user. After moving the app, toggle this setting off and back on to update its path.
+- **Keep running in tray when closed:** close the window without quitting. Use **Quit** to exit completely.
 
-## 🎛️ Bedienung & Hinweise
+Settings are stored in `%LOCALAPPDATA%\LumaXboxLed\settings.json`. One shared default intentionally survives changing XboxGIP device IDs. Manual edits affect the selected controller; newly detected controllers receive the shared default when automatic application is enabled.
 
-- Controller auswählen, Helligkeit verschieben oder ein Preset wählen.
-- Der Schalter „Xbox-Logo“ schaltet nur die LED aus; die eingestellte Helligkeit bleibt erhalten.
-- 0–100 % entsprechen dem unterstützten Protokollbereich 0–47. Die Vorschau zeigt die gewählte Einstellung, keine vom Controller zurückgelesene Helligkeit.
-- Lichtmodus: dauerhaft, pulsieren, blinken, Ladeanimation oder Einblenden. Die Unterstützung einzelner Animationen hängt vom Controller ab.
-- „In den Tray“ blendet das Fenster aus. Das hellgrüne **L** im Infobereich öffnet es wieder. Rechtsklick bietet LED ein/aus, drei Presets und Beenden.
-- Windows kann neue Tray-Symbole zunächst im Überlauf unter dem Pfeil verbergen. Das Luma-Symbol lässt sich von dort in den sichtbaren Infobereich ziehen.
-- „Beim Verbinden anwenden“ lädt den zuletzt gespeicherten Standardwert bei neu erkannten Controllern. Die Erkennung wird alle acht Sekunden geprüft.
-- „Mit Windows starten“ ist optional und zunächst deaktiviert. Es erzeugt einen Eintrag ausschließlich im Autostart des aktuellen Windows-Benutzers. Bei einem Umzug des App-Ordners den Schalter einmal aus- und wieder einschalten.
-- „Beim Schließen im Tray weiterlaufen“ lässt die App beim Schließen aktiv. Vollständig beenden: Tray-Menü oder Einstellungen → Luma beenden.
+## 🌍 Language support
 
-Einstellungen liegen in `%LOCALAPPDATA%\LumaXboxLed\settings.json`. Es gibt bewusst einen gemeinsamen gespeicherten Standardwert, da XboxGIP-Geräte-IDs nach erneutem Verbinden wechseln können. Manuelle Änderungen werden nur an den ausgewählten Controller gesendet; beim automatischen Wiederverbinden erhalten neu erkannte Geräte den Standardwert.
+The app follows the Windows display language using .NET UI culture selection. German variants such as `de-DE` and `de-AT` use German resources. English is the default and the fallback for other languages. This includes the interface, tray menu, status messages, accessibility labels, and app-authored errors. Error text originating from Windows itself may use the operating system's language.
 
-## 🛠️ Selbst bauen
+Translations live in `Resources/Strings.resx` (English) and `Resources/Strings.de.resx` (German). GitHub documentation and release descriptions are maintained in English.
 
-Voraussetzung: Windows x64 und .NET 10 SDK. Die Windows-Buildwerkzeuge werden per NuGet bezogen.
+## 📦 Compact distribution
+
+The self-contained executable is approximately **34 MiB**. The ZIP contains the EXE, a short guide, and two license files. On first launch, runtime files are extracted under `%TEMP%\.net\Luma` and reused. The 1.1 build used approximately **64 MiB** for this cache, giving about **98 MiB** total for the EXE and its active cache instead of the original 232 MiB program folder. Exact sizes vary between versions; old version caches may take additional space.
+
+Luma references the specific WinUI package rather than the full Windows App SDK, uses partial .NET trimming, and bundles the result into a compressed executable. Settings use source-generated JSON serialization.
+
+## 🛠️ Build it yourself
+
+Requirements: Windows x64 and the .NET 10 SDK. Windows build tools are restored through NuGet.
 
 ```powershell
-.\build.ps1          # Release-Build
-.\build.ps1 -Publish # Eigenständige portable Version
+.\build.ps1           # Release build
+.\build.ps1 -Publish  # Portable build in dist/Luma-Windows-x64
+# Protocol, settings, and language checks:
 dotnet run --project .\Tests\Luma.Tests.csproj -c Release
 ```
 
-`Luma.exe --demo` öffnet eine klar gekennzeichnete Vorschau ohne Hardwarebefehle oder gespeicherte Änderungen. `Luma.exe --tray` startet im Infobereich.
+`Luma.exe --demo` starts a demo without hardware commands or settings changes. `Luma.exe --tray` starts hidden in the system tray.
 
-Die Protokolltests verwenden ein unabhängiges 23-Byte-Referenzpaket und prüfen Off-/Nullwerte, Modusvalidierung, vollständige 64-Bit-Geräte-IDs, Grenzen und monotone Helligkeitsumrechnung. Mit `--discover` hinter den Testprogrammargumenten lässt sich zusätzlich die Geräteerkennung testen, ohne LED-Befehle zu senden.
+The backend opens Microsoft's existing `\\.\XboxGIP` interface. It does not install replacement drivers or process/emulate game input. The access method was reverse engineered by xbledctl. Successful transmission does not guarantee that every firmware supports every animation.
 
-Das Backend öffnet die bestehende Microsoft-Schnittstelle `\\.\XboxGIP`. Es installiert keine Treiber und verarbeitet oder emuliert keine Spieleingaben. Der zugrunde liegende Treiberzugriff wurde vom xbledctl-Projekt durch Reverse Engineering erschlossen. Eine erfolgreiche Übertragung bestätigt nicht, dass jede Firmware jeden Animationsmodus umsetzt.
+## 🧪 Validation and limitations
 
-## 🧪 Geprüft
+The tests cover a reference 23-byte protocol packet, LED-off behavior, mode validation, full 64-bit device IDs, brightness bounds, settings serialization, and German/English/fallback resource selection. The compact executable has also been checked with the real WinUI interface and controller discovery.
 
-Der Release-Build wurde lokal ohne Fehler und Warnungen gebaut. Die Protokoll- und Einstellungsprüfung umfasst 1.627 Assertions; die Geräteerkennung wurde mit einem angeschlossenen Xbox-Controller geprüft. Tray-Icon und Rechtsklick-Menü wurden vom Nutzer bestätigt. Die LED-Vorschau ist eine Darstellung der gewählten Einstellung und keine Messung der tatsächlichen Leuchtstärke.
+The trimmer reports warnings in Microsoft's Windows SDK and WinRT projections. Compatibility with every Windows build and controller firmware has not been exhaustively tested.
 
-## 💚 Danke an das Originalprojekt
+## 💚 Thanks to the original project
 
-Ein großes Dankeschön an **[Leclowndu93150](https://github.com/Leclowndu93150)** und **[xbledctl](https://github.com/Leclowndu93150/xbledctl)**!
+A huge thank-you to **[Leclowndu93150](https://github.com/Leclowndu93150)** and **[xbledctl](https://github.com/Leclowndu93150/xbledctl)**!
 
-xbledctl hat die entscheidende Vorarbeit für die LED-Steuerung unter Windows geleistet. Luma übernimmt daraus die Idee und den durch Reverse Engineering erschlossenen Zugriff auf den Microsoft-XboxGIP-Treiber, einschließlich des LED-Kommandos und des Paketformats. Das Backend wurde dafür in C# übertragen; WinUI-Oberfläche und Bedienung wurden für Luma entwickelt.
+xbledctl did the essential work to make Xbox controller LED control accessible on Windows. Luma draws on its idea, reverse-engineered XboxGIP access, LED command, and packet format. The backend was adapted to C#; Luma's WinUI interface and interaction design were developed separately.
 
-Die ursprüngliche Arbeit gehört ihren Autoren. Der MIT-Lizenztext und Copyright-Hinweis von xbledctl liegen vollständig in [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt), und die Herkunft ist in [GipController.cs](GipController.cs) vermerkt. Wer eine kompakte C/C++-Implementierung oder die technische Recherche sucht, sollte sich unbedingt das Original ansehen.
+The original work belongs to its authors. Its full MIT license and copyright notice are preserved in [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt), and [GipController.cs](GipController.cs) documents the provenance. Visit the original project for the compact C/C++ implementation and technical research.
 
-Danke auch an die Teams hinter **WinUI**, **Windows App SDK** und **.NET**, auf denen diese Oberfläche aufbaut.
+Thanks also to the teams behind **WinUI**, **Windows App SDK**, and **.NET**.
 
-## 📄 Lizenz
+## 📄 License
 
-MIT; siehe `LICENSE` und `THIRD-PARTY-NOTICES.txt`. Die enthaltenen Microsoft-Laufzeitkomponenten unterliegen ihren jeweiligen Lizenzen.
-
-## 📦 Kompakte Ausgabe ab 1.1
-
-Die selbstständige EXE ist rund **33,8 MiB** groß. Der Download enthält vier Dateien: EXE, Kurzanleitung und zwei Lizenztexte. Beim ersten Start werden rund **64,4 MiB** Laufzeitdateien nach `%TEMP%\.net\Luma` entpackt und danach wiederverwendet. EXE plus aktueller Cache benötigen damit etwa **98 MiB**, statt zuvor rund 232 MiB im Programmordner. Alte Versions-Caches können zusätzlichen Platz belegen.
-
-Dafür verwendet Luma das gezielte WinUI-Paket statt des vollständigen Windows-App-SDK-Pakets, komprimiertes Single-File-Publishing und partielles .NET-Trimming. Die Einstellungen verwenden generierten JSON-Serialisierungscode. Ein Entwickler-SDK oder eine separat installierte .NET-Laufzeit ist zum Starten weiterhin nicht erforderlich.
-
-Der verkleinerte Build wurde mit echter WinUI-Oberfläche, Controller-Erkennung und dem Laden der gespeicherten Einstellung geprüft. Der Linker meldet zwei Warnungen aus Microsofts Windows-/WinRT-Projektionen; weitere Controller- und Windows-Konfigurationen wurden nicht umfassend getestet.
+Luma is licensed under [MIT](LICENSE), copyright 2026 Xploder. The adapted xbledctl code retains its original MIT notice. Bundled Microsoft runtime components remain subject to their respective licenses.

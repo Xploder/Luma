@@ -1,3 +1,4 @@
+using static Luma.UiText;
 using System.Runtime.InteropServices;
 
 namespace Luma;
@@ -17,10 +18,10 @@ public sealed class NativeTray : IDisposable
         hwnd = window; this.show = show; this.toggle = toggle; this.preset = preset; this.quit = quit;
         icon = LoadImage(IntPtr.Zero, Path.Combine(AppContext.BaseDirectory, "Assets", "Luma.ico"), 1, 32, 32, 0x10);
         proc = WndProc;
-        if (!SetWindowSubclass(hwnd, proc, 1, UIntPtr.Zero)) throw new InvalidOperationException("Tray-Fenster konnte nicht eingerichtet werden.");
+        if (!SetWindowSubclass(hwnd, proc, 1, UIntPtr.Zero)) throw new InvalidOperationException(T("Tray-Fenster konnte nicht eingerichtet werden."));
         Add();
     }
-    private NotifyData Data() => new() { Size = (uint)Marshal.SizeOf<NotifyData>(), Window = hwnd, Id = 1, Flags = 7 | 0x80, Callback = Callback, Icon = icon != IntPtr.Zero ? icon : LoadIcon(IntPtr.Zero, (IntPtr)32512), Tip = "Luma · Controller-Licht", Info = "", InfoTitle = "" };
+    private NotifyData Data() => new() { Size = (uint)Marshal.SizeOf<NotifyData>(), Window = hwnd, Id = 1, Flags = 7 | 0x80, Callback = Callback, Icon = icon != IntPtr.Zero ? icon : LoadIcon(IntPtr.Zero, (IntPtr)32512), Tip = "Luma · Controller LED", Info = "", InfoTitle = "" };
     private void Add() { var data = Data(); added = Shell_NotifyIcon(0, ref data); if (added) { data.Version = 4; Shell_NotifyIcon(4, ref data); } }
     public bool IsAvailable => added;
     private IntPtr WndProc(IntPtr h, uint message, UIntPtr w, IntPtr l, UIntPtr id, UIntPtr data)
@@ -36,14 +37,14 @@ public sealed class NativeTray : IDisposable
                 IntPtr menu = CreatePopupMenu();
                 try
                 {
-                    AppendMenu(menu, 0, 1, "Luma öffnen");
-                    AppendMenu(menu, 0, 2, "LED ein / aus");
+                    AppendMenu(menu, 0, 1, T("Luma öffnen"));
+                    AppendMenu(menu, 0, 2, T("LED ein / aus"));
                     AppendMenu(menu, 0x800, 0, "");
-                    AppendMenu(menu, 0, 3, "Nacht · 10 %");
-                    AppendMenu(menu, 0, 4, "Entspannt · 30 %");
-                    AppendMenu(menu, 0, 5, "Hell · 100 %");
+                    AppendMenu(menu, 0, 3, T("Nacht · 10 %"));
+                    AppendMenu(menu, 0, 4, T("Entspannt · 30 %"));
+                    AppendMenu(menu, 0, 5, T("Hell · 100 %"));
                     AppendMenu(menu, 0x800, 0, "");
-                    AppendMenu(menu, 0, 6, "Beenden");
+                    AppendMenu(menu, 0, 6, T("Beenden"));
                     GetCursorPos(out var point); SetForegroundWindow(hwnd);
                     uint choice = TrackPopupMenu(menu, 0x102, point.X, point.Y, 0, hwnd, IntPtr.Zero);
                     PostMessage(hwnd, 0, UIntPtr.Zero, IntPtr.Zero);
@@ -57,7 +58,7 @@ public sealed class NativeTray : IDisposable
     }
     public static void ShowExisting()
     {
-        var window = FindWindow(null, "Luma · Controller-Licht");
+        var window = FindWindow(null, "Luma · Controller LED");
         if (window != IntPtr.Zero) PostMessage(window, 0x8002, UIntPtr.Zero, IntPtr.Zero);
     }
     public void Hide() { if (added) ShowWindow(hwnd, 0); }

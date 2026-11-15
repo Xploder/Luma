@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="Dauerhaft" xml:space="preserve">
+    <value>Steady</value>
+  </data>
+  <data name="Sanft pulsieren" xml:space="preserve">
+    <value>Slow pulse</value>
+  </data>
+  <data name="Schnell pulsieren" xml:space="preserve">
+    <value>Fast pulse</value>
+  </data>
+  <data name="Langsam blinken" xml:space="preserve">
+    <value>Slow blink</value>
+  </data>
+  <data name="Schnell blinken" xml:space="preserve">
+    <value>Fast blink</value>
+  </data>
+  <data name="Ladeanimation" xml:space="preserve">
+    <value>Charging blink</value>
+  </data>
+  <data name="Einblenden" xml:space="preserve">
+    <value>Fade in</value>
+  </data>
+  <data name="Helligkeit" xml:space="preserve">
+    <value>Brightness</value>
+  </data>
+  <data name="Einstellungen" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Lichtmodus" xml:space="preserve">
+    <value>Light mode</value>
+  </data>
+  <data name="Ein" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="Aus" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="In den Tray" xml:space="preserve">
+    <value>Hide to tray</value>
+  </data>
+  <data name="Beenden" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="Nacht · 10 %" xml:space="preserve">
+    <value>Night · 10 %</value>
+  </data>
+  <data name="Entspannt · 30 %" xml:space="preserve">
+    <value>Relaxed · 30 %</value>
+  </data>
+  <data name="Hell · 100 %" xml:space="preserve">
+    <value>Full · 100 %</value>
+  </data>
+  <data name="Controller auswählen" xml:space="preserve">
+    <value>Select controller</value>
+  </data>
+  <data name="Controller wird gesucht …" xml:space="preserve">
+    <value>Looking for a controller…</value>
+  </data>
+  <data name="Controller erneut suchen" xml:space="preserve">
+    <value>Refresh controllers</value>
+  </data>
+  <data name="USB oder Xbox Wireless Adapter" xml:space="preserve">
+    <value>USB or Xbox Wireless Adapter</value>
+  </data>
+  <data name="Xbox-Logo einschalten" xml:space="preserve">
+    <value>Enable Xbox logo LED</value>
+  </data>
+  <data name="LED-Helligkeit in Prozent" xml:space="preserve">
+    <value>LED brightness in percent</value>
+  </data>
+  <data name="Beim Verbinden anwenden" xml:space="preserve">
+    <value>Apply when connected</value>
+  </data>
+  <data name="Beim Verbinden automatisch anwenden" xml:space="preserve">
+    <value>Apply automatically when connected</value>
+  </data>
+  <data name="Mit Windows starten" xml:space="preserve">
+    <value>Start with Windows</value>
+  </data>
+  <data name="Beim Schließen im Tray weiterlaufen" xml:space="preserve">
+    <value>Keep running in tray when closed</value>
+  </data>
+  <data name="Tray-Symbol nicht verfügbar" xml:space="preserve">
+    <value>Tray icon unavailable</value>
+  </data>
+  <data name="Windows hat das Tray-Symbol nicht angenommen. Luma bleibt als Fenster geöffnet." xml:space="preserve">
+    <value>Windows could not create the tray icon. Luma will remain visible.</value>
+  </data>
+  <data name="Kein Controller verbunden" xml:space="preserve">
+    <value>No controller connected</value>
+  </data>
+  <data name="Vorschaumodus · keine Hardwarebefehle" xml:space="preserve">
+    <value>Demo mode · no hardware commands</value>
+  </data>
+  <data name="Verbunden über XboxGIP · USB / Xbox Wireless" xml:space="preserve">
+    <value>Connected via XboxGIP · USB / Xbox Wireless</value>
+  </data>
+  <data name="USB oder Xbox Wireless Adapter verbinden · Bluetooth unterstützt keine LED-Steuerung" xml:space="preserve">
+    <value>Connect using USB or an Xbox Wireless Adapter · Bluetooth LED control is not supported</value>
+  </data>
+  <data name="Vorschaumodus · es wird kein Controller gesteuert" xml:space="preserve">
+    <value>Demo mode · no controller is being changed</value>
+  </data>
+  <data name="Bereit · Änderungen werden direkt angewendet" xml:space="preserve">
+    <value>Ready · changes are applied immediately</value>
+  </data>
+  <data name="Warte auf einen Controller …" xml:space="preserve">
+    <value>Waiting for a controller…</value>
+  </data>
+  <data name="Gespeicherte Einstellung angewendet" xml:space="preserve">
+    <value>Saved setting applied</value>
+  </data>
+  <data name="USB oder Xbox Wireless Adapter verbinden. Bluetooth wird nicht unterstützt." xml:space="preserve">
+    <value>Connect using USB or an Xbox Wireless Adapter. Bluetooth is not supported.</value>
+  </data>
+  <data name="Controller nicht erreichbar" xml:space="preserve">
+    <value>Controller unavailable</value>
+  </data>
+  <data name="Gespeichert · wird beim nächsten Verbinden angewendet" xml:space="preserve">
+    <value>Saved · will apply on the next connection</value>
+  </data>
+  <data name="Gespeichert · automatisches Anwenden ist deaktiviert" xml:space="preserve">
+    <value>Saved · automatic application is disabled</value>
+  </data>
+  <data name="LED ausgeschaltet" xml:space="preserve">
+    <value>LED switched off</value>
+  </data>
+  <data name="Änderung konnte nicht angewendet werden" xml:space="preserve">
+    <value>Could not apply the setting</value>
+  </data>
+  <data name="Verbindung prüfen" xml:space="preserve">
+    <value>Check connection</value>
+  </data>
+  <data name="Autostart nicht geändert" xml:space="preserve">
+    <value>Could not change startup setting</value>
+  </data>
+  <data name="Einstellung nicht gespeichert" xml:space="preserve">
+    <value>Could not save settings</value>
+  </data>
+  <data name="XboxGIP ist nicht erreichbar. Controller über USB oder Xbox Wireless Adapter verbinden." xml:space="preserve">
+    <value>XboxGIP is unavailable. Connect a controller using USB or an Xbox Wireless Adapter.</value>
+  </data>
+  <data name="Kein Controller verbunden." xml:space="preserve">
+    <value>No controller connected.</value>
+  </data>
+  <data name="LED-Befehl wurde nicht vollständig übertragen." xml:space="preserve">
+    <value>The LED command was not sent completely.</value>
+  </data>
+  <data name="Der Controller antwortet nicht. Bitte erneut verbinden." xml:space="preserve">
+    <value>The controller is not responding. Please reconnect it.</value>
+  </data>
+  <data name="Luma · Controller-Licht" xml:space="preserve">
+    <value>Luma · Controller LED</value>
+  </data>
+  <data name="Luma öffnen" xml:space="preserve">
+    <value>Open Luma</value>
+  </data>
+  <data name="LED ein / aus" xml:space="preserve">
+    <value>Toggle LED</value>
+  </data>
+  <data name="Tray-Fenster konnte nicht eingerichtet werden." xml:space="preserve">
+    <value>Could not initialize the tray window.</value>
+  </data>
+  <data name="Helligkeit {0} % · angewendet" xml:space="preserve">
+    <value>Brightness {0}% · applied</value>
+  </data>
+</root>

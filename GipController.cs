@@ -1,3 +1,4 @@
+using static Luma.UiText;
 // XboxGIP protocol adapted from xbledctl (MIT), © 2026 Leclowndu93150.
 // See THIRD-PARTY-NOTICES.txt. No replacement driver or input emulation.
 using System.Buffers.Binary;
@@ -36,7 +37,7 @@ public sealed class GipController : IDisposable
         if (handle == null || handle.IsInvalid || handle.IsClosed)
         {
             handle = CreateFileW(@"\\.\XboxGIP", 0xC0000000, 3, IntPtr.Zero, 3, 0x40000000, IntPtr.Zero);
-            if (handle.IsInvalid) { int code = Marshal.GetLastWin32Error(); Dispose(); throw new Win32Exception(code, "XboxGIP ist nicht erreichbar. Controller über USB oder Xbox Wireless Adapter verbinden."); }
+            if (handle.IsInvalid) { int code = Marshal.GetLastWin32Error(); Dispose(); throw new Win32Exception(code, T("XboxGIP ist nicht erreichbar. Controller über USB oder Xbox Wireless Adapter verbinden.")); }
         }
         Io(2, Array.Empty<byte>(), 1000);
         var ids = new HashSet<ulong>();
@@ -56,10 +57,10 @@ public sealed class GipController : IDisposable
     }
     public void SetLed(ulong id, bool enabled, byte mode, int percent)
     {
-        if (handle == null || handle.IsInvalid) throw new InvalidOperationException("Kein Controller verbunden.");
+        if (handle == null || handle.IsInvalid) throw new InvalidOperationException(T("Kein Controller verbunden."));
         var packet = LedPacket.Create(id, sequence, enabled ? mode : (byte)0, percent);
         sequence = sequence == 255 ? (byte)1 : (byte)(sequence + 1);
-        if (Io(1, packet, 1500) != packet.Length) throw new IOException("LED-Befehl wurde nicht vollständig übertragen.");
+        if (Io(1, packet, 1500) != packet.Length) throw new IOException(T("LED-Befehl wurde nicht vollständig übertragen."));
     }
 
     // Own the event, OVERLAPPED and pinned buffer until completion, including cancellation.
@@ -91,7 +92,7 @@ public sealed class GipController : IDisposable
                     // Wait for cancellation before freeing the OVERLAPPED/buffer.
                     GetOverlappedResult(handle!, native, out count, true);
                     if (allowTimeout) return 0;
-                    throw new TimeoutException("Der Controller antwortet nicht. Bitte erneut verbinden.");
+                    throw new TimeoutException(T("Der Controller antwortet nicht. Bitte erneut verbinden."));
                 }
                 if (!GetOverlappedResult(handle!, native, out count, false)) throw new Win32Exception(Marshal.GetLastWin32Error());
             }
