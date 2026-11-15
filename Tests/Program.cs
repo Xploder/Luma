@@ -45,6 +45,17 @@ try
 }
 finally { System.Globalization.CultureInfo.CurrentUICulture = previousCulture; }
 Console.WriteLine("PASS: German, English, and fallback localization");
+var wheel = new WheelScrollState();
+Check(wheel.TryAdvance(1_000, -120, 0, 200, out var offset) && offset == 48, "First wheel packet");
+Check(!wheel.TryAdvance(1_000, -120, 0, 200, out _), "A routed packet must not scroll twice");
+Check(wheel.TryAdvance(2_000, -120, 0, 200, out offset) && offset == 96, "Pending deltas must accumulate before the UI catches up");
+Check(wheel.TryAdvance(3_000, 120, 0, 200, out offset) && offset == 48, "Direction reversal within a burst");
+Check(wheel.TryAdvance(500_000, -120, 120, 200, out offset) && offset == 168, "Resynchronize after other scrolling");
+Check(wheel.TryAdvance(501_000, -1200, 120, 200, out offset) && offset == 200, "Bottom boundary");
+Check(wheel.TryAdvance(502_000, 1200, 120, 200, out offset) && offset == 0, "Top boundary");
+Check(wheel.TryAdvance(503_000, -15, 0, 200, out offset) && offset == 6, "High-resolution wheel delta");
+Check(wheel.TryAdvance(900_000, -120, 0, 0, out offset) && offset == 0, "Content that fits the window");
+Console.WriteLine("PASS: wheel packet deduplication, queued deltas, direction changes, boundaries and high-resolution input");
 if (args.Contains("--discover"))
 {
  using var backend = new GipController();

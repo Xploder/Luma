@@ -24,6 +24,7 @@ public sealed partial class MainWindow : Window
     private ulong selected;
     private ulong pendingTarget;
     private int revision;
+    private readonly WheelScrollState wheel = new();
     private readonly (string Name, byte Code)[] modes = { (T("Dauerhaft"), 1), (T("Sanft pulsieren"), 8), (T("Schnell pulsieren"), 9), (T("Langsam blinken"), 3), (T("Schnell blinken"), 2), (T("Ladeanimation"), 4), (T("Einblenden"), 13) };
 
     public MainWindow()
@@ -43,7 +44,6 @@ public sealed partial class MainWindow : Window
         };
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "Luma.ico"));
         if (AppWindow.Presenter is OverlappedPresenter presenter) presenter.PreferredMinimumWidth = 380;
-        ContentPanel.AddHandler(UIElement.PointerWheelChangedEvent, new PointerEventHandler(ContentWheel), true);
         Root.AddHandler(UIElement.PointerWheelChangedEvent, new PointerEventHandler(WindowWheel), true);
         Brightness.ForwardWheel = ScrollWheel;
         Modes.ForwardWheel = ScrollWheel;
@@ -154,23 +154,23 @@ public sealed partial class MainWindow : Window
         Brightness.IsEnabled = settings.Enabled;
         Modes.IsEnabled = settings.Enabled;
     }
-    private void ContentWheel(object sender, PointerRoutedEventArgs e)
-    {
-        if (!e.Handled) ScrollWheel(e);
-    }
-    private void WindowWheel(object sender, PointerRoutedEventArgs e)
-    {
-        if (!e.Handled) ScrollWheel(e);
-    }
+    private void WindowWheel(object sender, PointerRoutedEventArgs e) => ScrollWheel(e);
     private void ScrollWheel(PointerRoutedEventArgs e)
     {
         // A popup is a separate scrolling surface; keep its list usable.
         if (Modes.IsDropDownOpen || Controllers.IsDropDownOpen) return;
         var point = e.GetCurrentPoint(Root);
         if (point.Properties.IsHorizontalMouseWheel) return;
-        double offset = MainScroll.VerticalOffset - point.Properties.MouseWheelDelta / 120.0 * 48;
-        MainScroll.ChangeView(null, Math.Clamp(offset, 0, MainScroll.ScrollableHeight), null, true);
         e.Handled = true;
+        // A control override and the root can see the same routed event. Process
+        // each packet once, even if a child marked it handled. ScrollView's own
+        // mouse-wheel manipulation is disabled, leaving a single input owner.
+        // Preserve pending deltas within a burst: ScrollTo completes asynchronously.
+        // After a pause, synchronize with scrollbar/touch/keyboard scrolling.
+        if (!wheel.TryAdvance(point.Timestamp, point.Properties.MouseWheelDelta,
+            MainScroll.VerticalOffset, MainScroll.ScrollableHeight, out double target)) return;
+        MainScroll.ScrollTo(MainScroll.HorizontalOffset, target,
+            new ScrollingScrollOptions(ScrollingAnimationMode.Disabled, ScrollingSnapPointsMode.Ignore));
     }
     private async Task SendAsync()
     {

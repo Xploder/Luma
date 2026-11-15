@@ -97,3 +97,7 @@ Thanks also to the teams behind **WinUI**, **Windows App SDK**, and **.NET**.
 ## 📄 License
 
 Luma is licensed under [MIT](LICENSE), copyright 2026 Xploder. The adapted xbledctl code retains its original MIT notice. Bundled Microsoft runtime components remain subject to their respective licenses.
+
+## 1.2.1 scrolling fix
+
+The main page now uses WinUI's newer `ScrollView`. Its built-in mouse-wheel handling is disabled so that one page-level handler owns wheel input. Child controls can no longer suppress scrolling just by marking an event handled. Duplicate routed packets are ignored, and rapid wheel deltas are accumulated while scrolling completes asynchronously. Touch, keyboard, scrollbar, and open-dropdown interactions retain their own handling.
