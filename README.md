@@ -111,3 +111,7 @@ The main page uses WinUI `ScrollView` with a separate vertical scrollbar. The sc
 The active window receives mouse-wheel input through Windows Raw Input, so scrolling remains available over controls that consume WinUI wheel events. Registration is limited to foreground input; no global hook or background input capture is used. Wheel input is applied only while the pointer is over Luma, and open dropdown lists keep their own input handling. Native window subclasses and WinUI pointer handlers provide additional input handling and prevent duplicate page scrolling. Rapid deltas are accumulated while scrolling completes asynchronously.
 
 For troubleshooting, start `Luma.exe --scroll-diagnostics` to enable a local `Luma-scroll.log` beside the executable. It records wheel deltas and scroll dimensions, but no pointer positions, controller IDs, or input from other applications. Logging is disabled during normal use.
+
+## High-DPI display support
+
+Luma declares Per-Monitor V2 DPI awareness and enables layout rounding. This prevents Windows bitmap scaling of the interface on high-DPI monitors. Version 1.3.1 was visually checked on a 4K display at 150% Windows scaling, including scrolling.
