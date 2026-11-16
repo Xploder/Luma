@@ -79,6 +79,8 @@ public sealed partial class MainWindow : Window
         LedEnabled.IsOn = settings.Enabled;
         AutoApply.IsOn = settings.AutoApply;
         CloseToTray.IsOn = settings.CloseToTray;
+        foreach (string label in new[] { T("Auto (Windows)"), "Deutsch", "English", "Español", "Français", "Português" }) LanguageChoice.Items.Add(label);
+        LanguageChoice.SelectedIndex = Array.IndexOf(LedSettings.Languages, settings.Language);
         foreach (string label in new[] { T("Aus"), T("8 Sekunden"), T("15 Sekunden"), T("30 Sekunden"), T("1 Minute"), T("5 Minuten") }) RefreshInterval.Items.Add(label);
         RefreshInterval.SelectedIndex = Array.IndexOf(LedSettings.RefreshIntervals, settings.RefreshIntervalSeconds);
         UpdateRefreshHint();
@@ -168,6 +170,12 @@ public sealed partial class MainWindow : Window
         reconnect.Interval = TimeSpan.FromSeconds(settings.RefreshIntervalSeconds);
         reconnect.Start();
     }
+    private void LanguageChoice_Changed(object sender, SelectionChangedEventArgs e)
+    {
+        if (initializing || LanguageChoice.SelectedIndex < 0) return;
+        settings.Language = LedSettings.Languages[LanguageChoice.SelectedIndex];
+        Save();
+    }
     private void RefreshInterval_Changed(object sender, SelectionChangedEventArgs e)
     {
         if (initializing || RefreshInterval.SelectedIndex < 0) return;
@@ -218,7 +226,7 @@ public sealed partial class MainWindow : Window
             args.Handled = true;
         }
     }
-    private bool CanScrollPage() => !exiting && Root.XamlRoot != null && !Modes.IsDropDownOpen && !Controllers.IsDropDownOpen && !RefreshInterval.IsDropDownOpen;
+    private bool CanScrollPage() => !exiting && Root.XamlRoot != null && !Modes.IsDropDownOpen && !Controllers.IsDropDownOpen && !RefreshInterval.IsDropDownOpen && !LanguageChoice.IsDropDownOpen;
     private bool HandleRawWheel(int delta)
     {
         nativePacket = Math.Max(nativePacket + 1, (ulong)Environment.TickCount64 * 1000);

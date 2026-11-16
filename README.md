@@ -8,7 +8,7 @@
 
 Your Xbox controller does not need to be a floodlight. 🎮🌙
 
-**Windows 11 · WinUI 3 · .NET 10 · English / Deutsch · MIT**
+**Windows 11 · WinUI 3 · .NET 10 · 5 languages · MIT**
 
 </div>
 
@@ -26,7 +26,7 @@ Luma adjusts the Xbox logo LED from a compact native Windows window or the syste
 | 🔁 Reconnect | Automatically apply the saved setting when a controller reconnects |
 | 🚀 Startup | Optionally start with Windows, hidden in the tray |
 | 🖥️ Compact UI | Small controls and settings directly in the main window |
-| 🌍 Languages | German on German Windows installations; English otherwise |
+| 🌍 Languages | Auto detection or manual selection: English, German, Spanish, French, Portuguese |
 
 > **Connection:** USB or the Microsoft Xbox Wireless Adapter. This LED control method does not support Bluetooth.
 
@@ -59,9 +59,9 @@ Luma sends LED commands when settings change or when a newly detected controller
 
 ## 🌍 Language support
 
-The app follows the Windows display language using .NET UI culture selection. German variants such as `de-DE` and `de-AT` use German resources. English is the default and the fallback for other languages. This includes the interface, tray menu, status messages, accessibility labels, and app-authored errors. Error text originating from Windows itself may use the operating system's language.
+Choose **Auto (Windows)**, **Deutsch**, **English**, **Español**, **Français**, or **Português** under Settings → Language. Auto remains the default and follows the Windows display language, with English as the fallback for unsupported languages. Regional variants use their matching language resources. Changes are saved and take effect after restarting Luma. This includes the interface, tray menu, status messages, accessibility labels, and app-authored errors. Error text originating from Windows itself may use the operating system's language.
 
-Translations live in `Resources/Strings.resx` (English) and `Resources/Strings.de.resx` (German). GitHub documentation and release descriptions are maintained in English.
+Translations live in `Resources/Strings.resx` (English) and `Resources/Strings.de.resx`, `Strings.es.resx`, `Strings.fr.resx`, and `Strings.pt.resx`. GitHub documentation and release descriptions are maintained in English.
 
 ## 📦 Compact distribution
 
@@ -86,7 +86,7 @@ The backend opens Microsoft's existing `\\.\XboxGIP` interface. It does not inst
 
 ## 🧪 Validation and limitations
 
-The tests cover a reference 23-byte protocol packet, LED-off behavior, mode validation, full 64-bit device IDs, brightness bounds, settings serialization, and German/English/fallback resource selection. The compact executable has also been checked with the real WinUI interface and controller discovery.
+The tests cover a reference 23-byte protocol packet, LED-off behavior, mode validation, full 64-bit device IDs, brightness bounds, settings serialization, and five-language resource completeness and fallback selection. The compact executable has also been checked with the real WinUI interface and controller discovery.
 
 The trimmer reports warnings in Microsoft's Windows SDK and WinRT projections. Compatibility with every Windows build and controller firmware has not been exhaustively tested.
 

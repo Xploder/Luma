@@ -22,6 +22,13 @@ public partial class App : Application
         if (!first) { NativeTray.ShowExisting(); Exit(); return; }
         try
         {
+            string language = LedSettings.Load().Language;
+            if (language != "auto")
+            {
+                var culture = System.Globalization.CultureInfo.GetCultureInfo(language);
+                System.Globalization.CultureInfo.CurrentUICulture = culture;
+                System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = culture;
+            }
             window = new MainWindow();
             window.Activate();
             if (Environment.GetCommandLineArgs().Contains("--tray")) window.HideToTray();

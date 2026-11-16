@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -203,5 +203,14 @@
   </data>
   <data name="15 Sekunden" xml:space="preserve">
     <value>15 Sekunden</value>
+  </data>
+  <data name="Auto (Windows)">
+    <value>Auto (Windows)</value>
+  </data>
+  <data name="Sprache">
+    <value>Sprache</value>
+  </data>
+  <data name="Sprachänderungen gelten nach einem Neustart von Luma.">
+    <value>Sprachänderungen gelten nach einem Neustart von Luma.</value>
   </data>
 </root>

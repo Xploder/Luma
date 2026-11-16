@@ -2,5 +2,5 @@
  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
  <PropertyGroup><RootNamespace>Luma</RootNamespace></PropertyGroup>
  <ItemGroup><Compile Include="..\GipController.cs" Link="GipController.cs"/><Compile Include="..\Settings.cs" Link="Settings.cs"/><Compile Include="..\WheelScrollState.cs" Link="WheelScrollState.cs"/><Compile Include="..\UiText.cs" Link="UiText.cs"/><EmbeddedResource Include="..\Resources\Strings.resx" Link="Resources\Strings.resx"/><EmbeddedResource Include="..\Resources\Strings.de.resx" Link="Resources\Strings.de.resx"/></ItemGroup>
-</Project>
+<ItemGroup><EmbeddedResource Include="..\Resources\Strings.es.resx" Link="Resources\Strings.es.resx"/><EmbeddedResource Include="..\Resources\Strings.fr.resx" Link="Resources\Strings.fr.resx"/><EmbeddedResource Include="..\Resources\Strings.pt.resx" Link="Resources\Strings.pt.resx"/></ItemGroup></Project>
 

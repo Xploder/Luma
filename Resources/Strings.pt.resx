@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="Dauerhaft" xml:space="preserve">
+    <value>Fixa</value>
+  </data>
+  <data name="Sanft pulsieren" xml:space="preserve">
+    <value>Pulsação lenta</value>
+  </data>
+  <data name="Schnell pulsieren" xml:space="preserve">
+    <value>Pulsação rápida</value>
+  </data>
+  <data name="Langsam blinken" xml:space="preserve">
+    <value>Intermitência lenta</value>
+  </data>
+  <data name="Schnell blinken" xml:space="preserve">
+    <value>Intermitência rápida</value>
+  </data>
+  <data name="Ladeanimation" xml:space="preserve">
+    <value>Animação de carregamento</value>
+  </data>
+  <data name="Einblenden" xml:space="preserve">
+    <value>Acender gradualmente</value>
+  </data>
+  <data name="Helligkeit" xml:space="preserve">
+    <value>Brilho</value>
+  </data>
+  <data name="Einstellungen" xml:space="preserve">
+    <value>Definições</value>
+  </data>
+  <data name="Lichtmodus" xml:space="preserve">
+    <value>Modo de luz</value>
+  </data>
+  <data name="Ein" xml:space="preserve">
+    <value>Ligado</value>
+  </data>
+  <data name="Aus" xml:space="preserve">
+    <value>Desligado</value>
+  </data>
+  <data name="In den Tray" xml:space="preserve">
+    <value>Minimizar para a área de notificação</value>
+  </data>
+  <data name="Beenden" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="Nacht · 10 %" xml:space="preserve">
+    <value>Noite · 10 %</value>
+  </data>
+  <data name="Entspannt · 30 %" xml:space="preserve">
+    <value>Suave · 30 %</value>
+  </data>
+  <data name="Hell · 100 %" xml:space="preserve">
+    <value>Máximo · 100 %</value>
+  </data>
+  <data name="Controller auswählen" xml:space="preserve">
+    <value>Selecionar comando</value>
+  </data>
+  <data name="Controller wird gesucht …" xml:space="preserve">
+    <value>À procura de um comando…</value>
+  </data>
+  <data name="Controller erneut suchen" xml:space="preserve">
+    <value>Procurar comandos</value>
+  </data>
+  <data name="USB oder Xbox Wireless Adapter" xml:space="preserve">
+    <value>USB ou adaptador Xbox Wireless</value>
+  </data>
+  <data name="Xbox-Logo einschalten" xml:space="preserve">
+    <value>Ativar o LED do logótipo Xbox</value>
+  </data>
+  <data name="LED-Helligkeit in Prozent" xml:space="preserve">
+    <value>Brilho do LED em percentagem</value>
+  </data>
+  <data name="Beim Verbinden anwenden" xml:space="preserve">
+    <value>Aplicar ao ligar</value>
+  </data>
+  <data name="Beim Verbinden automatisch anwenden" xml:space="preserve">
+    <value>Aplicar automaticamente ao ligar</value>
+  </data>
+  <data name="Mit Windows starten" xml:space="preserve">
+    <value>Iniciar com o Windows</value>
+  </data>
+  <data name="Beim Schließen im Tray weiterlaufen" xml:space="preserve">
+    <value>Continuar na área de notificação ao fechar</value>
+  </data>
+  <data name="Tray-Symbol nicht verfügbar" xml:space="preserve">
+    <value>Ícone de notificação indisponível</value>
+  </data>
+  <data name="Windows hat das Tray-Symbol nicht angenommen. Luma bleibt als Fenster geöffnet." xml:space="preserve">
+    <value>O Windows não conseguiu criar o ícone de notificação. O Luma permanecerá visível.</value>
+  </data>
+  <data name="Kein Controller verbunden" xml:space="preserve">
+    <value>Nenhum comando ligado</value>
+  </data>
+  <data name="Vorschaumodus · keine Hardwarebefehle" xml:space="preserve">
+    <value>Modo de demonstração · sem comandos de hardware</value>
+  </data>
+  <data name="Verbunden über XboxGIP · USB / Xbox Wireless" xml:space="preserve">
+    <value>Ligado por XboxGIP · USB / Xbox Wireless</value>
+  </data>
+  <data name="USB oder Xbox Wireless Adapter verbinden · Bluetooth unterstützt keine LED-Steuerung" xml:space="preserve">
+    <value>Ligue por USB ou com um adaptador Xbox Wireless · O controlo do LED não suporta Bluetooth</value>
+  </data>
+  <data name="Vorschaumodus · es wird kein Controller gesteuert" xml:space="preserve">
+    <value>Modo de demonstração · nenhum comando é alterado</value>
+  </data>
+  <data name="Bereit · Änderungen werden direkt angewendet" xml:space="preserve">
+    <value>Pronto · as alterações são aplicadas de imediato</value>
+  </data>
+  <data name="Warte auf einen Controller …" xml:space="preserve">
+    <value>À espera de um comando…</value>
+  </data>
+  <data name="Gespeicherte Einstellung angewendet" xml:space="preserve">
+    <value>Definição guardada aplicada</value>
+  </data>
+  <data name="USB oder Xbox Wireless Adapter verbinden. Bluetooth wird nicht unterstützt." xml:space="preserve">
+    <value>Ligue por USB ou com um adaptador Xbox Wireless. Bluetooth não é suportado.</value>
+  </data>
+  <data name="Controller nicht erreichbar" xml:space="preserve">
+    <value>Comando indisponível</value>
+  </data>
+  <data name="Gespeichert · wird beim nächsten Verbinden angewendet" xml:space="preserve">
+    <value>Guardado · será aplicado na próxima ligação</value>
+  </data>
+  <data name="Gespeichert · automatisches Anwenden ist deaktiviert" xml:space="preserve">
+    <value>Guardado · aplicação automática desativada</value>
+  </data>
+  <data name="LED ausgeschaltet" xml:space="preserve">
+    <value>LED desligado</value>
+  </data>
+  <data name="Änderung konnte nicht angewendet werden" xml:space="preserve">
+    <value>Não foi possível aplicar a definição</value>
+  </data>
+  <data name="Verbindung prüfen" xml:space="preserve">
+    <value>Verificar ligação</value>
+  </data>
+  <data name="Autostart nicht geändert" xml:space="preserve">
+    <value>Não foi possível alterar o arranque automático</value>
+  </data>
+  <data name="Einstellung nicht gespeichert" xml:space="preserve">
+    <value>Não foi possível guardar as definições</value>
+  </data>
+  <data name="XboxGIP ist nicht erreichbar. Controller über USB oder Xbox Wireless Adapter verbinden." xml:space="preserve">
+    <value>O XboxGIP está indisponível. Ligue um comando por USB ou com um adaptador Xbox Wireless.</value>
+  </data>
+  <data name="Kein Controller verbunden." xml:space="preserve">
+    <value>Nenhum comando ligado.</value>
+  </data>
+  <data name="LED-Befehl wurde nicht vollständig übertragen." xml:space="preserve">
+    <value>O comando do LED não foi enviado na totalidade.</value>
+  </data>
+  <data name="Der Controller antwortet nicht. Bitte erneut verbinden." xml:space="preserve">
+    <value>O comando não está a responder. Volte a ligá-lo.</value>
+  </data>
+  <data name="Luma · Controller-Licht" xml:space="preserve">
+    <value>Luma · LED do comando</value>
+  </data>
+  <data name="Luma öffnen" xml:space="preserve">
+    <value>Abrir Luma</value>
+  </data>
+  <data name="LED ein / aus" xml:space="preserve">
+    <value>Ligar / desligar LED</value>
+  </data>
+  <data name="Tray-Fenster konnte nicht eingerichtet werden." xml:space="preserve">
+    <value>Não foi possível inicializar a janela de notificação.</value>
+  </data>
+  <data name="Helligkeit {0} % · angewendet" xml:space="preserve">
+    <value>Brilho {0}% · aplicado</value>
+  </data>
+  <data name="Intervall für automatische Controllersuche" xml:space="preserve">
+    <value>Intervalo de procura automática de comandos</value>
+  </data>
+  <data name="5 Minuten" xml:space="preserve">
+    <value>5 minutos</value>
+  </data>
+  <data name="Neue Controller werden im gewählten Abstand erkannt." xml:space="preserve">
+    <value>Os novos comandos são detetados no intervalo selecionado.</value>
+  </data>
+  <data name="1 Minute" xml:space="preserve">
+    <value>1 minuto</value>
+  </data>
+  <data name="30 Sekunden" xml:space="preserve">
+    <value>30 segundos</value>
+  </data>
+  <data name="8 Sekunden" xml:space="preserve">
+    <value>8 segundos</value>
+  </data>
+  <data name="Automatisch suchen" xml:space="preserve">
+    <value>Procura automática</value>
+  </data>
+  <data name="Aus: Suche nur beim Start und manuell." xml:space="preserve">
+    <value>Desligado: procurar apenas ao iniciar e manualmente.</value>
+  </data>
+  <data name="15 Sekunden" xml:space="preserve">
+    <value>15 segundos</value>
+  </data>
+  <data name="Auto (Windows)">
+    <value>Auto (Windows)</value>
+  </data>
+  <data name="Sprache">
+    <value>Idioma</value>
+  </data>
+  <data name="Sprachänderungen gelten nach einem Neustart von Luma.">
+    <value>A alteração do idioma é aplicada após reiniciar o Luma.</value>
+  </data>
+</root>

@@ -46,7 +46,7 @@ Console.WriteLine($"PASS: {checks} protocol/settings checks");
 var previousCulture = System.Globalization.CultureInfo.CurrentUICulture;
 try
 {
- foreach (var culture in new[] { "de-DE", "de-AT", "en-US", "en-GB", "fr-FR" })
+ foreach (var culture in new[] { "de-DE", "de-AT", "en-US", "en-GB", "ja-JP" })
  {
   System.Globalization.CultureInfo.CurrentUICulture = new(culture);
   bool german = culture.StartsWith("de");
@@ -75,3 +75,36 @@ if (args.Contains("--discover"))
  try { var ids = backend.Discover(); Console.WriteLine($"Read-only discovery: {ids.Count} controller(s)"); foreach (var id in ids) Console.WriteLine($"  {id:X16}"); }
  catch (Exception e) { Console.WriteLine($"Hardware discovery unavailable: {e.Message}"); }
 }
+
+foreach (string language in LedSettings.Languages)
+{
+ var languageSettings = new LedSettings { Language = language };
+ string serialized = System.Text.Json.JsonSerializer.Serialize(languageSettings, SettingsJsonContext.Default.LedSettings);
+ Check(System.Text.Json.JsonSerializer.Deserialize(serialized, SettingsJsonContext.Default.LedSettings)!.Language == language, "Language preference must survive restart");
+}
+Check(LedSettings.ValidLanguage("unknown") == "auto" && LedSettings.ValidLanguage(null) == "auto", "Invalid language falls back to Auto");
+Check(System.Text.Json.JsonSerializer.Deserialize("{}", SettingsJsonContext.Default.LedSettings)!.Language == "auto", "Older settings default to Auto");
+var resourceManager = new System.Resources.ResourceManager("Luma.Resources.Strings", typeof(UiText).Assembly);
+var neutral = resourceManager.GetResourceSet(System.Globalization.CultureInfo.InvariantCulture, true, false)!;
+foreach (string language in new[] { "de", "es", "fr", "pt" })
+{
+ var translated = resourceManager.GetResourceSet(new System.Globalization.CultureInfo(language), true, false)!;
+ foreach (System.Collections.DictionaryEntry entry in neutral)
+ {
+  string? value = translated.GetString((string)entry.Key);
+  Check(!string.IsNullOrWhiteSpace(value), $"Missing {language} translation: {entry.Key}");
+  if (((string)entry.Value!).Contains("{0}")) Check(value!.Contains("{0}"), "Translation must retain the brightness placeholder");
+ }
+}
+Console.WriteLine("PASS: all five languages complete, placeholders and language preference persistence");
+var originalUiCulture = System.Globalization.CultureInfo.CurrentUICulture;
+try
+{
+ foreach (var sample in new[] { ("es-MX", "Brillo"), ("fr-CA", "Luminosité"), ("pt-BR", "Brilho") })
+ {
+  System.Globalization.CultureInfo.CurrentUICulture = new(sample.Item1);
+  Check(UiText.T("Helligkeit") == sample.Item2, "Regional language fallback must select translated resources");
+ }
+}
+finally { System.Globalization.CultureInfo.CurrentUICulture = originalUiCulture; }
+Console.WriteLine("PASS: Spanish, French and Portuguese regional variants");
