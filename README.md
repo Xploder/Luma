@@ -10,6 +10,10 @@ Your Xbox controller does not need to be a floodlight. 🎮🌙
 
 **Windows 11 · WinUI 3 · .NET 10 · 5 languages · MIT**
 
+<img src="docs/luma-screenshot.jpg" width="520" alt="Luma 1.4 on Windows 11, showing LED brightness, presets, light modes, language selection and settings" />
+
+*The native Windows interface, shown in English. Five languages and automatic language detection are available.*
+
 </div>
 
 ---
